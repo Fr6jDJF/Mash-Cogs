@@ -51,8 +51,8 @@ class imdb:
             except Exception as e:
                 await self.bot.say("` Error getting a result.`")
 
-    @commands.command(pass_context=True, no_pm=True)
-    @checks.admin_or_permissions(manage_server=True)    
+    @commands.command(pass_context=True, no_pm=False)
+    @checks.admin_or_permissions(manage_server=True)
     async def apikey_imdb(self, ctx, key):
         """Set the imdb API key."""
         user = ctx.message.author
