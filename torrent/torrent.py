@@ -30,7 +30,7 @@ class Torrent:
         if text == ():
             return
         text = "".join(text)
-        print(text)        
+        #print(text)        
         # Basic Search
         search = ktorrent.search(search=text)
         # Complex Search
@@ -60,7 +60,7 @@ class Torrent:
 			"web"
         """
         
-        print (search)
+        #print (search)
         d = json.loads(search)
         
         if len(d) > 1:
