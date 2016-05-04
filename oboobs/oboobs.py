@@ -30,7 +30,7 @@ SETTINGS = DIR_DATA+"/settings.json"
 #example: "/noise/vote/57/minus/" - negative vote for noise with id 57;
 
 class oboobs:
-    """The oboobs/obutts.ru pictures of nature cog.
+    """The oboobs/obutts.ru NSFW pictures of nature cog.
     https://github.com/Canule/Mash-Cogs
     """
 
