@@ -1,0 +1,6 @@
+{
+    "AUTHOR" : "Mash",
+    "DESCRIPTION" : "Search torrents on kickass/kat.cr for Linux distro's etc...",
+    "DISABLED" : false,
+    "NAME" : "torrent"
+}
