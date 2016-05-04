@@ -1,2 +1,2 @@
 # Mash-Cogs
-General cogs.
+General cogs for a [Twentysix's Red-DiscordBot](https://github.com/Twentysix26/Red-DiscordBot)
