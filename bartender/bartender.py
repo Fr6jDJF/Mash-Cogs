@@ -29,8 +29,8 @@ class Bartender:
         icon = ""
         available = False
         for i, item in enumerate(self.items):
-            print(i)
-            print(item)
+            #print(i)
+            #print(item)
             if drink == self.items[i][0]:
                 icon = self.items[i][1]
                 price = self.items[i][2]*amount
@@ -75,27 +75,21 @@ class Bartender:
     def enough_money(self, id, amount):
         if self.account_check(id):
             if self.bank[id]["balance"] >= int(amount):
-                print("y enough")
                 return True
-            else:
-                print("n enough")            
+            else:          
                 return False
-        else:
-            print("n account")          
+        else:      
             return False
             
     def withdraw_money(self, id, amount):
         if self.account_check(id):
             if self.bank[id]["balance"] >= int(amount):
                 self.bank[id]["balance"] = self.bank[id]["balance"] - int(amount)
-                fileIO("data/economy/bank.json", "save", self.bank)
-                print("paid")                
+                fileIO("data/economy/bank.json", "save", self.bank)             
                 return True
             else:
-                print("not paid")
                 return False
         else:
-            print("not paid")
             return False
 
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
