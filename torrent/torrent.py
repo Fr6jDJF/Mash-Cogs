@@ -62,7 +62,7 @@ class Torrent:
         
         #print (search)
         d = json.loads(search)
-        
+            
         if len(d) > 1:
             list = "\n"
             index = 0
@@ -70,10 +70,18 @@ class Torrent:
                 index += 1
                 item = d["torrent"][items]
                 name = item["name"][:200] 
-                list = list + "**[{6}]\n       Name: **{0}\n       **Age: **{1}\n**       Leech/Seed: **{2}/{3}\n**       Size: **{4}\n**       Link: **{5}\n\n".format(name, item["age"], item["seed"], item["leech"], item["size"], item["link"], str(index))
+                emoij_index = self.replace_text(str(index))
+                list = list + "{6}\n       **Name: **{0}\n       **Age: **{1}\n**       Leech/Seed: **{2}/{3}\n**       Size: **{4}\n**       Link: **{5}\n\n".format(name, item["age"], item["seed"], item["leech"], item["size"], item["link"], emoij_index)
             await self.bot.say(list)
         else:      
             await self.bot.say("shrug")
+    
+    def replace_text(self, val):
+            replaceThis = [["1", ":one:"], ["2", ":two:"], ["3", ":three:"], ["4", ":four:"], ["5", ":five:"], ["6", ":six:"], ["7", ":seven:"], ["8", ":eight: "], ["9", ":nine:"], ["10", ":keycap_ten:"]]
+            replacedText = val
+            for r in range(0, len(replaceThis)):
+                replacedText = replacedText.replace(replaceThis[r][0], replaceThis[r][1])                    
+            return replacedText
         
 #--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Set-up
