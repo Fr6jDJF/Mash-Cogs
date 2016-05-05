@@ -17,7 +17,7 @@ class Bartender:
     """Search for torrents"""
     def __init__(self,bot):
         self.bot = bot
-        self.items = [["beer", ":beer:", 2], ["wine", ":wine_glass:", 2], ["racecar", ":race_car:", 120000]]
+        self.items = [["beer", ":beer:", 2], ["wine", ":wine_glass:", 2], ["cocktail", ":cocktail:", 4]]
         self.numbers = ["one", "two", "tree", "four", "five", "six", "seven", "eight", "nine", "ten"]
         self.text= ["one", "two", "tree", "four", "five", "six", "seven", "eight", "nine", "ten"]
         self.bank = fileIO("data/economy/bank.json", "load")
