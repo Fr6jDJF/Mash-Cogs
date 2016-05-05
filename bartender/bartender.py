@@ -14,7 +14,7 @@ import os
 
 
 class Bartender:
-    """Search for torrents"""
+    """Buy a drink at the bar"""
     def __init__(self,bot):
         self.bot = bot
         self.items = [["beer", ":beer:", 2], ["wine", ":wine_glass:", 2], ["cocktail", ":cocktail:", 4], ["tropical", ":tropical_drink:", 5], ["sake", ":sake:", 4], ["champagne", ":champagne:", 30], ["tea", ":tea:", 1], ["coffee", ":coffee::", 1]]
@@ -64,7 +64,7 @@ class Bartender:
                 text_num = self.numbers[amount-1]
             except Exception as e:
                 text_num = str(amount)
-            await self.bot.say("{0} Sorry mate, you don't have enough money for {1} {2}.\n it cost's €{3}".format(author.mention, text_num, drink, price))
+            await self.bot.say("{0} Sorry mate, you don't have enough money for {1} {2}.\n it cost's {3}".format(author.mention, text_num, drink, price))
            
     def account_check(self, id):
         if id in self.bank:
