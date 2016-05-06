@@ -19,6 +19,11 @@ try:
     pil_available = True
 except:
     pil_available = False
+try:
+    import emoji
+    emoji_available = False
+except:
+    emoji_available = True
 
 
 DIR_DATA = "data/bartender"
@@ -78,12 +83,18 @@ class Bartender:
             for d in range(0,amount):
                 drinks = drinks+icon
             if buy_for == "":
-                await self.bot.say("{} There you go mate {}".format(buy_for, drinks))
+                msg = "{} There you go mate {}".format(buy_for, drinks)
+                msg = emoji.emojize(msg, use_aliases=True)
+                await self.bot.say(msg)
             else:
                 if amount > 1:
-                    await self.bot.say("{0} Have some {1}'s from {2}{3}".format(buy_for, drink, author, drinks))                    
-                else:    
-                    await self.bot.say("{0} Have some {1} from {2}{3}".format(buy_for, drink, author, drinks)) 
+                    msg = "{0} Have some {1}'s from {2}{3}".format(buy_for, drink, author, drinks)
+                    msg = emoji.emojize(msg, use_aliases=True)
+                    await self.bot.say(msg)
+                else:
+                    msg ="{0} Have some {1} from {2}{3}".format(buy_for, drink, author, drinks)
+                    msg = emoji.emojize(msg, use_aliases=True)
+                    await self.bot.say(msg)
         else:
             try:
                 text_num = self.numbers[amount-1]
@@ -93,9 +104,10 @@ class Bartender:
 
     @commands.command(pass_context=True, no_pm=False)
     async def beverages(self, ctx):
-        msg = "s"
+        author = ctx.message.author  
+        msg = "**We have: **"
         for b in self.items:
-            msg = msg + b[0]
+            msg = msg + "{} ${}, ".format(b[0], b[2])
         await self.bot.say(msg)
         
     #if Economy.py updates, this may break
@@ -170,6 +182,9 @@ def check_files():
 def setup(bot):
     if not pil_available:
         raise RuntimeError("You don't have Pillow installed, run\n```pip3 install pillow```And try again")
+        return
+    if not pil_available:
+        raise ModuleNotFound("emoji is not installed. Do 'pip3 install emoji --upgrade' to use this cog.")
         return
     check_folders()
     check_files()
