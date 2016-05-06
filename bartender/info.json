@@ -1,6 +1,6 @@
 {
     "AUTHOR" : "Mash",
-    "DESCRIPTION" : "Buy some drinks at the bar",
+    "DESCRIPTION" : "Buy some drinks at the bar with economy currency.",
     "DISABLED" : false,
-    "NAME" : "Buy some drinks at the bar"
+    "NAME" : "Buy some drinks at the bar with economy currency."
 }
