@@ -32,7 +32,7 @@ BACKUP = DIR_DATA+"/bank_backup.json"
 BANK = "data/economy/bank.json"
 
 class Bartender:
-    """Buy a drink at the bar"""
+    """Buy a drink at the bar with Red's economy currency"""
     def __init__(self,bot):
         self.bot = bot
         self.settings = fileIO(SETTINGS, "load")
@@ -41,7 +41,7 @@ class Bartender:
         
     @commands.command(pass_context=True, no_pm=False)
     async def buy(self, ctx, amount : int, drink):
-        """Buy a drink"""
+        """Buy a drink with currency from red economy"""
         botuser = self.bot.user
         content = ctx.message.content      
         mentions = ctx.message.mentions       
