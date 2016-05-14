@@ -28,6 +28,7 @@ class Torrent:
     async def torrent(self, ctx, *, text):
         """Search for various torrents""""
         if text == ():
+            await send_cmd_help(ctx)
             return
         text = "".join(text)
         #print(text)        
