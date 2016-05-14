@@ -70,7 +70,7 @@ class oboobs:
         else:
             await self.bot.send_message(ctx.message.author, "{}".format(boob))
             if self.settings["nsfw_msg"]:
-                await self.bot.say("{}` nsfw content is not alowed in this channel, instead I have send you a DM.`".format(author.mention))
+                await self.bot.say("{}` nsfw content is not allowed in this channel, instead I have send you a DM.`".format(author.mention))
 
     # Ass
     @commands.command(pass_context=True, no_pm=False)
@@ -97,7 +97,7 @@ class oboobs:
         else:
             await self.bot.send_message(ctx.message.author, "{}".format(ass))
             if self.settings["nsfw_msg"]:
-                await self.bot.say("{}` nsfw content is not alowed in this channel, instead I have send you a DM.`".format(author.mention))
+                await self.bot.say("{}` nsfw content is not allowed in this channel, instead I have send you a DM.`".format(author.mention))
 
     @checks.admin_or_permissions(manage_server=True)
     @_oboobs.command(pass_context=True, no_pm=False)
