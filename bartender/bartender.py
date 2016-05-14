@@ -41,7 +41,7 @@ class Bartender:
         
     @commands.command(pass_context=True, no_pm=False)
     async def buy(self, ctx, amount : int, drink):
-        """Buy a drink with currency from red economy"""
+        """Buy a drink with currency from Red's economy"""
         botuser = self.bot.user
         content = ctx.message.content      
         mentions = ctx.message.mentions       
