@@ -103,6 +103,7 @@ class Bartender:
             await self.bot.say("{0} Sorry mate, you don't have enough money for {1} {2}.\n it cost's {3}".format(author.mention, text_num, drink, price))
 
     @commands.command(pass_context=True, no_pm=False)
+    """This is what we serve at the bar."""
     async def beverages(self, ctx):
         author = ctx.message.author  
         msg = "**We have: **"
