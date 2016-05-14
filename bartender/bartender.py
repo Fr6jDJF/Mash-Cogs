@@ -118,7 +118,7 @@ class Bartender:
         """Opens the bar and registers the bot into Economy.py bank. 
         WARNING: Edits Economy.py's bank.json file.
         If Economy.py is updated in the future with a different format for bank.json, the data in bank.json (everyone's balances) may be lost.
-        This command will try to save a backup in data/economytrickle/bank-backup.json in case that happens.
+        This command will try to save a backup in data/bartender/bank-backup.json in case that happens.
         If you understand this and still want to register your bot in the bank, do: [p]registerbar yes
         """
         if agree.lower() == "yes":
@@ -158,7 +158,7 @@ class Bartender:
         econ = None
         econ = self.bot.get_cog('Economy')
         if econ == None:
-            print("--- Error: Was not able to load Economy cog into Economytrickle. ---")
+            print("--- Error: Was not able to load Economy cog into Bartender. ---")
             return False
         else:
             return econ
