@@ -1,6 +1,7 @@
 {
     "AUTHOR" : "Mash",
-    "DESCRIPTION" : "Search torrents at kickass/kat.cr for Linux distro's etc...\nBe aware there is no filtering of results\nUse at your own risk",
-    "DISABLED" : false,
-    "NAME" : "Search torrents at kickass/kat.cr for Linux distro's etc...\nBe aware there is no filtering of results\nUse at your own risk"
+    "INSTALL_MSG" : "Be aware there is no content filtering of results\nUse at your own risk"",
+    "NAME" : "Torrent",
+    "SHORT" : "Search torrents at kickass/kat.cr for Linux distro's etc...",
+    "DESCRIPTION" : "Search torrents at kickass/kat.cr for Linux distro's etc..."
 }
