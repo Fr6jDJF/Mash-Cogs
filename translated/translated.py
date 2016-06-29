@@ -159,7 +159,7 @@ class Translated:
             else: 
                 translated = ""
                 try:
-                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de=4webcrap@gmail.com".format(text, languageFrom, languageTo))
+                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de=".format(text, languageFrom, languageTo))
                     print(search)
                     async with aiohttp.get(search) as r:
                         result = await r.json()
