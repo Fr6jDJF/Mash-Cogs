@@ -26,7 +26,7 @@ class Torrent:
 
     @commands.command(pass_context=True, no_pm=False)
     async def torrent(self, ctx, *, text):
-        """Search for various torrents""""
+        """Search for various torrents"""
         if text == ():
             await send_cmd_help(ctx)
             return
