@@ -1064,4 +1064,4 @@ def setup(bot):
     n = Audio(bot)
     loop.create_task(n.queue_manager())
     bot.add_listener(n.incoming_messages, "on_message")
-bot.add_cog(n)
+    bot.add_cog(n)
