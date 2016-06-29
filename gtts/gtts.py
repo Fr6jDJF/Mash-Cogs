@@ -286,7 +286,7 @@ class Audio:
         countTts = 0
         while countTts <= 999:
             checkFile = "data/audio/tts/tts{}.mp3".format(countTts)
-            if not os.path.exists(checkFile):
+            if not os.path.isfile(checkFile):
                 ttsFile = "data/audio/tts/tts{}.mp3".format(countTts)
                 break
             else:
@@ -294,7 +294,7 @@ class Audio:
         tts.save(ttsFile)
 
         msg = ctx.message
-        if os.path.exists(ttsFile):
+        if os.path.isfile(ttsFile):
             if await self.check_voice(msg.author, ctx.message, True):
                 try:
                     if self.music_player.is_playing():
