@@ -15,8 +15,8 @@ import time
 import aiohttp
 
 DIR_DATA = "data/translated"
-CACHE = DIR_DATA+"/cache.json"
-CH_LANG = DIR_DATA+"/chlang.json"
+CACHE = DIR_DATA+"/cache.json"  #System translations
+CH_LANG = DIR_DATA+"/chlang.json"   #Channel/server language
 SETTINGS = DIR_DATA+"/settings.json"
 
 class Translated:
