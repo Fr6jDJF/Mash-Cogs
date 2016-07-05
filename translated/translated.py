@@ -14,6 +14,11 @@ import time
 #import logging
 import aiohttp
 
+#ToDo
+#bot output replacement
+#submit corrected translations to translated.net, so they will be spot on on eventualy.
+#...
+
 EMAIL = "less_limitations@when_valid_mail.set"
 DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"  #System translations
