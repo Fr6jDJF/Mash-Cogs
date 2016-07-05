@@ -16,7 +16,7 @@ import aiohttp
 
 #ToDo
 #bot output replacement
-#submit corrected translations to translated.net, so they always will be spot on eventualy.
+#submit corrected sys translations to translated.net, so they always will be acurate at first call eventualy.
 #...
 
 EMAIL = "less_limitations@when_valid_mail.set"
