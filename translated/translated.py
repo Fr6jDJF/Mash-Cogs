@@ -14,6 +14,7 @@ import time
 #import logging
 import aiohttp
 
+EMAIL = "less_limitatins@when_valid_mail.set"
 DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"  #System translations
 CH_LANG = DIR_DATA+"/chlang.json"   #Channel/server language
@@ -159,7 +160,7 @@ class Translated:
             else: 
                 translated = ""
                 try:
-                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de=mail@somewhere.com".format(text, languageFrom, languageTo))
+                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de={}".format(text, languageFrom, languageTo, EMAIL))
                     print(search)
                     async with aiohttp.get(search) as r:
                         result = await r.json()
