@@ -14,7 +14,7 @@ import time
 #import logging
 import aiohttp
 
-EMAIL = "less_limitatins@when_valid_mail.set"
+EMAIL = "less_limitations@when_valid_mail.set"
 DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"  #System translations
 CH_LANG = DIR_DATA+"/chlang.json"   #Channel/server language
