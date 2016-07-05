@@ -67,7 +67,7 @@ class Translated:
         text = " ".join(text) 
         result = await self.translate_text(languageFrom, languageTo, text)
          
-        if result == None:
+        if result == "not valid" :
             await self.bot.say("{} `Error Translating, wrong language format, check DM`".format(author.mention))
             lenLang = len(self.ISO_LANG)
             done = 0
