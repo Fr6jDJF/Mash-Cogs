@@ -275,10 +275,6 @@ class RSS(object):
                 for chan_id in feeds[server]:
                     if chan_id not in self.cache:
                         self.cache[chan_id] = []
-                        print(chan_id)
-                        print(self.cache[chan_id])
-                    print(len(self.cache[chan_id]))                        
-                    print("\n")
                     
                     for name, items in feeds[server][chan_id].items():
                         try:
@@ -289,8 +285,6 @@ class RSS(object):
                                 continue
                             msg = await self.get_current_feed(server, chan_id,
                                                               name, items)
-                            #if msg is not None:
-                            #    await self.bot.send_message(channel, msg)
                                 
                             if msg is not None and msg not in self.cache[chan_id]:
                                 if len(self.cache[chan_id]) >= self.cache_limit:
