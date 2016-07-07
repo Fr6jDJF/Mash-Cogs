@@ -1,1 +1,8 @@
-{}
+{
+    "AUTHOR" : "Will/tekulvw",
+    "DESCRIPTION" : "Read RSS Feeds",
+    "DISABLED" : false,
+    "SHORT" : "Read RSS Feeds",
+    "NAME" : "RSS",
+    "INSTALL_MSG" : "This is an modded version of <https://github.com/tekulvw/Squid-Plugins/tree/master/rss>"
+}
