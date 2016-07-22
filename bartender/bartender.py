@@ -85,7 +85,7 @@ class Bartender:
                 for d in range(0,amount):
                     drinks = drinks+icon
                 if buy_for == "":
-                    msg = "There you go mate {}".format(buy_for, drinks)
+                    msg = "There you go mate {}".format(drinks)
                     msg = emoji.emojize(msg, use_aliases=True)
                     await self.bot.say(msg)
                 else:
