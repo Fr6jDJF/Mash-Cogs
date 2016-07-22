@@ -80,7 +80,7 @@ def check_folders():
         os.makedirs("data/weather")
 
 def check_files():
-    settings = {"api_key": "Get your API key from: www.wunderground.com/weather/api/", "unit": "C", "defCountry": "nl" }
+    settings = {"api_key": "Get your API key from: www.wunderground.com/weather/api/", "unit": "C", "defCountry": "uk" }
     
     if not fileIO(SETTINGS, "check"):
         print("Creating settings.json")
