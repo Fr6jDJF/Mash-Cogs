@@ -1,6 +1,55 @@
+from .utils.dataIO import fileIO
+from .utils import checks
+from __main__ import set_cog, send_cmd_help, settings
+# Sys.
+from operator import itemgetter, attrgetter
+import discord
+from discord.ext import commands
+#
+#from copy import deepcopy
+import subprocess
+import asyncio
+import threading
+import logging
+import queue
+import json
+import os
+import sys
+import time
+#import aiohttp
+import random
+import itertools, glob
+import importlib
+#
+import struct
+import webbrowser
+import collections
+#import tkinter as tk
+
+if os.name == "nt":
+    try:
+        import win32api
+        win32api_available = True
+    except:
+        win32api_available = False
+    import pywintypes
+    #gui
+    import win32console
+    import win32api
+    import win32con
+    import win32gui
+    import win32gui_struct
+elif sys.platform == "darwin":
+    pass
+if sys.platform == "linux" or sys.platform == "linux2":
+    pass
 
 __author__ = "Mash/Canule"
 __version__ = "0.0.1"
+
+# TODO:
+# Unregister class(cog reload)
+# Break loop after unregister
 
 def kill_red(bot):
     try:
