@@ -1,3 +1,7 @@
+
+__author__ = "Mash/Canule"
+__version__ = "0.0.1"
+
 def kill_red(bot):
     try:
         f = open("red.pid","r")
@@ -184,3 +188,29 @@ class prep_dev_menu():
         self.sub_menu += ("Refresh tray menu", None, lambda event: self.add_tasks(op="fresh"), self.state),     
         #self.sub_menu += ("Monkey", None, self.list_options("Banana"), None),        
         return self.sub_menu
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+# Common Functions
+#---------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# Open some browser
+class open_browser():
+    def __init__ (self, url="127.0.0.1:8080"):
+        try:
+            subprocess.call([r"C:\Program Files (x86)\Mozilla Firefox\Firefox.exe", "-new-tab", url])
+            return
+        except Exception as e:
+            pass
+        try:
+            subprocess.call([r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", "-new-tab", url])
+            return
+        except Exception as e:
+            webbrowser.open(url)# Opens an shitty IE
+            return
+        
+# Clear commandline
+class cls_cmd():
+    def __init__ (self):
+        if os.name == 'nt':
+            clear = lambda: os.system("cls")#Win only
+            clear()
