@@ -254,12 +254,12 @@ class open_browser():
             subprocess.call([r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", "-new-tab", url])
             return
         except Exception as e:
-            webbrowser.open(url)# Opens an shitty IE
+            webbrowser.open(url)# Opens shitty IE
             return
         
 # Clear commandline
 class cls_cmd():
     def __init__ (self):
         if os.name == 'nt':
-            clear = lambda: os.system("cls")#Win only
+            clear = lambda: os.system("cls")# Win only
             clear()
