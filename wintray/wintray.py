@@ -244,18 +244,19 @@ class prep_dev_menu():
 
 # Open some browser
 class open_browser():
-    def __init__ (self, url="127.0.0.1:8080"):
-        try:
-            subprocess.call([r"C:\Program Files (x86)\Mozilla Firefox\Firefox.exe", "-new-tab", url])
-            return
-        except Exception as e:
-            pass
-        try:
-            subprocess.call([r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", "-new-tab", url])
-            return
-        except Exception as e:
-            webbrowser.open(url)# Opens shitty IE
-            return
+    if os.name == 'nt':
+        def __init__ (self, url="127.0.0.1:8080"):
+            try:
+                subprocess.call([r"C:\Program Files (x86)\Mozilla Firefox\Firefox.exe", "-new-tab", url])
+                return
+            except Exception as e:
+                pass
+            try:
+                subprocess.call([r"C:\Program Files (x86)\Google\Chrome\Application\chrome.exe", "-new-tab", url])
+                return
+            except Exception as e:
+                webbrowser.open(url)# Opens shitty IE
+                return
         
 # Clear commandline
 class cls_cmd():
