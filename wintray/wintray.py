@@ -135,3 +135,52 @@ class OpenBrowser():
         self.instructor = instructor
         self.taskname = "OpenBrowser"
         self.url = url
+
+# Development sub menu
+class prep_dev_menu():
+    def __init__(self, state):
+        global trayQueue
+        self.state = state
+        self.sub_menu = ()
+
+    def add_tasks(self, cog=None, op=None, url=None, title="Error building menu ", msg="Check cog_operations()", icon=ICON_FILE2):
+        instr = "devmenu"
+        if op == "rl":# Reload
+            q = trayQueue.put(ReloadCog(instr, cog))
+        elif op == "ul":# Unload
+            q = trayQueue.put(UnloadCog(instr, cog))
+        elif op == "ld":# Load
+            q = trayQueue.put(LoadCog(instr, cog))
+        elif op == "pop":# Pop baloon text
+            q = trayQueue.put(BalloonInfo(instr, title, msg))
+        elif op == "owb":# Web browser
+            q = trayQueue.put(OpenBrowser(instr, url))
+        elif op == "inst":# Install
+            q = trayQueue.put(InstallCog(instr, og))
+        elif op == "swico":# Switch icon
+            q = trayQueue.put(ChangeIcon(instr, icon))
+        elif op == "fresh":# Refresh menu
+            menu_options = ()
+            menu_options += ("\o/ Useless shitty menu", None, lambda event: print("1"), "GRAYED"), 
+            menu_options += ("Checked item", None,  lambda event: print("2"), "CHECKED"), 
+            menu_options += ("RADIO_CHECKED item", None,  lambda event: print("3"), "RADIO_CHECKED"), 
+            menu_options += ("RADIO_UNCHECKED item", None,  lambda event: print("4"), "RADIO_UNCHECKED"), 
+            menu_options += ("TEXT item", None,  lambda event: print("5"), "TEXT"),
+            prep_menu = [None, None, None, menu_options]
+            q = trayQueue.put(UpdateMenu(instr, prep_menu))
+        else:
+            q = trayQueue.put(BalloonInfo(instr, title, msg))
+        return q
+
+    def list_options(self, data=None):
+        list_options = ()
+        list_options += ("some", None,  lambda event: print(data), None),
+        return list_options
+        
+    def create_sub(self):          
+        self.sub_menu = ()
+        self.sub_menu += ("Clear command line", None, lambda event: cls_cmd(), self.state),
+        self.sub_menu += ("Switch Icon", None, lambda event: self.add_tasks(op="swico", icon=ICON_FILE2), self.state),
+        self.sub_menu += ("Refresh tray menu", None, lambda event: self.add_tasks(op="fresh"), self.state),     
+        #self.sub_menu += ("Monkey", None, self.list_options("Banana"), None),        
+        return self.sub_menu
