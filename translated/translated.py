@@ -34,7 +34,6 @@ SETTINGS = DIR_DATA+"/settings.json"
 class Translated:
     """Translate text with use of translated.net API. 
     Machine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.
-    https://github.com/Canule/Red-DiscordBot
     """
     
     def __init__(self, bot):
