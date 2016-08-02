@@ -110,8 +110,7 @@ class Translated:
             return
         cached = None
         if languageFrom == languageTo:
-            return text        
-        #text = text.replace(" ", "%20")
+            return text
         
         langPair =  languageFrom+languageTo
         if not langPair in self.cache:
