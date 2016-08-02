@@ -189,6 +189,7 @@ class Translated:
 
     @commands.group(pass_context=True)
     async def settr(self, ctx):
+        """Magic OP commands for translated"""
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
             
