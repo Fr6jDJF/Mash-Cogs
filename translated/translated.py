@@ -160,7 +160,7 @@ class Translated:
                 translated = ""
                 try:
                     search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de={}".format(text, languageFrom, languageTo, EMAIL))
-                    print(search)
+                    #print(search)
                     async with aiohttp.get(search) as r:
                         result = await r.json()
                         #print("\nRESULT\n")
@@ -179,8 +179,6 @@ class Translated:
                         except Exception as e:
                             print("get")
                             if not self.NO_ERR:
-                                pass
-                                #print("#Translated: {}@ {}({}).{}({})".format(e, ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
                                 print("Translated: Missing permissions (403) @ {}({}).{}({})".format(ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
                     return translated
                 else:
