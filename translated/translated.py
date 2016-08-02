@@ -192,14 +192,14 @@ class Translated:
         if ctx.invoked_subcommand is None:
             await send_cmd_help(ctx)
             
-    @settr.command(pass_context=True, name="cl")
+    @settr.command(pass_context=True, name="cl", hidden=True)
     async def _set_cl(self, ctx, languageTo):
         """Set channel language"""    
         await self.bot.say("placehlolder set channel language") 
     
     @settr.command(pass_context=True, name="update")
     async def _update(self, ctx, languageTo): 
-        """Update a translation."""
+        """Update a system translation."""
         languageTo = languageTo.upper()
         langPair =  "EN"+languageTo
         textFrom = ""
