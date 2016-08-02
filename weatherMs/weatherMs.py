@@ -19,7 +19,6 @@ class weatherMs:
     def __init__(self, bot):
         self.bot = bot
         self.settings = fileIO("data/weather/settings.json", "load")
-        self.PREFIXES = bot_settings.prefixes
                 
     @commands.command(no_pm=True, pass_context=False)
     async def temp(self, location, country: str=None):
