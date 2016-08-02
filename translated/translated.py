@@ -25,7 +25,7 @@ __version__ = "0.0.1"
 #...
 
 
-EMAIL = "" #EMAIL = "less_limitations@when_valid_mail.set"
+EMAIL = "less_limitations@when_valid_mail.set" #EMAIL = "less_limitations@when_valid_mail.set"
 DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"
 CH_LANG = DIR_DATA+"/chlang.json"
