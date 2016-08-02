@@ -143,21 +143,11 @@ class Translated:
         if text == ():
             return "empty"
         else:
-            #encoded = [[s.encode('utf8') for s in t] for t in text]
-            #encoded = [s.encode('utf8') for s in text]
-            #encoded = encoded.encode('utf8')
-            #test = text.encode('utf-8')
-            #text = str(text).encode('ascii', 'backslashreplace')
-            
-            #text = " ".join(text)
-            #text = text.replace(" ", "%20")
             text = {"q":text}
             #print(text["q"])
            
             import urllib.parse as up            
             text = up.urlencode(text)
-            #text = up.quote(text, safe='/', encoding="utf-8", errors=None)
-            #print("encode utf-8 - decode that text")
             #print(text)
             languageFrom = languageFrom.upper()
             languageTo = languageTo.upper()
