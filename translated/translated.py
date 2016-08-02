@@ -14,6 +14,8 @@ import time
 #import logging
 import aiohttp
 
+__author__ = "Mash"
+__version__ = "0.0.1"
 
 #ToDo:
 
