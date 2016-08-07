@@ -56,7 +56,7 @@ class oboobs:
                 nsfwChan = True
                 break
         try:
-            rdm = random.randint(0, 9547)      
+            rdm = random.randint(0, 9853)      
             search = ("http://api.oboobs.ru/boobs/{}".format(rdm))
             async with aiohttp.get(search) as r:
                 result = await r.json()
@@ -83,7 +83,7 @@ class oboobs:
                 nsfwChan = True
                 break
         try:
-            rdm = random.randint(0, 3540)        
+            rdm = random.randint(0, 3846)        
             search = ("http://api.obutts.ru/butts/{}".format(rdm))
             async with aiohttp.get(search) as r:
                 result = await r.json()
