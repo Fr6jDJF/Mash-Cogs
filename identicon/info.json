@@ -2,6 +2,6 @@
 "AUTHOR" : "Mash",
 "INSTALL_MSG" : "Done.",
 "NAME" : "Identicon",
-"SHORT" : "Generate an avatar by your Discord ID.",
-"DESCRIPTION" : "Generate an avatar by your Discord ID."
+"SHORT" : "Generate an avatar based on your Discord ID.",
+"DESCRIPTION" : "Generate an avatar based on your your Discord ID."
 }
