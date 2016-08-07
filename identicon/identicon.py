@@ -24,8 +24,11 @@ except:
 identicon.py is Licesensed under FreeBSD License.
 (http://www.freebsd.org/copyright/freebsd-license.html)
 Copyright 1994-2009 Shin Adachi. All rights reserved.
-https://github.com/shnjp/identicon #Python 2
-https://github.com/Canule/identicon #Python 3
+#Python 2
+https://pypi.python.org/pypi/identicon
+https://github.com/shnjp/identicon
+#Python 3
+https://github.com/Canule/identicon
 """
 
 __author__ = "Mash"
