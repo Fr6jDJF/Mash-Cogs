@@ -2,6 +2,6 @@
 "AUTHOR" : "Mash",
 "INSTALL_MSG" : "Done.",
 "NAME" : "Freesound",
-"SHORT" : "Download SFX from freesound.org to /audio/sfx/freesound folder",
-"DESCRIPTION" : "Download SFX from freesound.org to folder /audio/sfx/freesound\nRequires a https://www.freesound.org/docs/api/ key."
+"SHORT" : "Download SFX from freesound.org to the data/audio/sfx/freesound folder",
+"DESCRIPTION" : "Downloads audio files from freesound.org, and converts them to flac including metadata.\nRequires ffmpeg and a https://www.freesound.org/docs/api/ key."
 }
