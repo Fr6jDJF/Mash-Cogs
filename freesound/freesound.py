@@ -40,7 +40,7 @@ __version__ = "0.0.1"
 # ...
 
 # Known Issue's:
-# freesound-python fails when data in result contain "/"
+# freesound-python fails when results contain "/"
 
 DIR_DATA = "data/freesound"
 DIR_TMP = DIR_DATA+"/tmp/"
@@ -107,7 +107,6 @@ class FreesoundClient():
         Get a sound object by id
         Relevant params: descriptors, fields, normalized
         http://freesound.org/docs/api/resources_apiv2.html#sound-resources
-
         >>> sound = c.get_sound(6)
         """
         uri = URIS.uri(URIS.SOUND, sound_id)
@@ -119,7 +118,6 @@ class FreesoundClient():
         Pager object. The fields parameter allows you to specify the
         information you want in the results list
         http://freesound.org/docs/api/resources_apiv2.html#text-search
-
         >>> sounds = c.text_search(
         >>>     query="dubstep", filter="tag:loop", fields="id,name,url"
         >>> )
@@ -133,7 +131,6 @@ class FreesoundClient():
         Search sounds using a content-based descriptor target and/or filter
         See essentia_example.py for an example using essentia
         http://freesound.org/docs/api/resources_apiv2.html#content-search
-
         >>> sounds = c.content_based_search(
         >>>     target="lowlevel.pitch.mean:220",
         >>>     descriptors_filter="lowlevel.pitch_instantaneous_confidence.mean:[0.8 TO 1]",  # noqa
@@ -147,7 +144,6 @@ class FreesoundClient():
         """
         Combine both text and content-based queries.
         http://freesound.org/docs/api/resources_apiv2.html#combined-search
-
         >>> sounds = c.combined_search(
         >>>     target="lowlevel.pitch.mean:220",
         >>>     filter="single-note"
@@ -160,7 +156,6 @@ class FreesoundClient():
         """
         Get a user object by username
         http://freesound.org/docs/api/resources_apiv2.html#combined-search
-
         >>> u=c.get_user("xserra")
         """
         uri = URIS.uri(URIS.USER, username)
@@ -170,7 +165,6 @@ class FreesoundClient():
         """
         Get a user object by username
         http://freesound.org/docs/api/resources_apiv2.html#combined-search
-
         >>> p = c.get_pack(3416)
         """
         uri = URIS.uri(URIS.PACK, pack_id)
@@ -181,7 +175,6 @@ class FreesoundClient():
         Set your API key or Oauth2 token
         http://freesound.org/docs/api/authentication.html
         http://freesound.org/docs/api/resources_apiv2.html#combined-search
-
         >>> c.set_token("<your_api_key>")
         """
         self.token = token  # TODO
