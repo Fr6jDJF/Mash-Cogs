@@ -519,7 +519,7 @@ class Freesound:
             await self.bot.say("Invalid url")
             return        
         else:
-            print(url)
+            #print(url)
             key = self.settings["API_KEY"]                
             freesound_client = FreesoundClient()            
             freesound_client.set_token(key)
