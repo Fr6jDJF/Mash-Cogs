@@ -1,0 +1,7 @@
+{
+"AUTHOR" : "Mash",
+"INSTALL_MSG" : "Done.",
+"NAME" : "Freesound",
+"SHORT" : "Download SFX from freesound.org to /audio/sfx/freesound folder",
+"DESCRIPTION" : "Download SFX from freesound.org to folder /audio/sfx/freesound\nRequires a https://www.freesound.org/docs/api/ key."
+}
