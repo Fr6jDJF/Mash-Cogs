@@ -513,7 +513,7 @@ class Freesound:
         self.settings = fileIO(SETTINGS, "load")
 
     @commands.command(pass_context=True, no_pm=False)
-    @checks.admin_or_permissions(manage_server=True)    
+    @checks.admin_or_permissions(manage_server=True)
     async def fsfx(self, ctx, url):
         """Fetch sound effect files from freesound.org and put them in the general audio sfx folder"""
         
