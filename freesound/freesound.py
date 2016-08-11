@@ -515,7 +515,7 @@ class Freesound:
         if self.settings["API_KEY"] == "":
             await self.bot.say("Please provide an api key.")
             return
-        elif not url.startswith("http://freesound.org"):
+        elif not url.startswith(("http://freesound.org", "http://www.freesound.org", "https://freesound.org", "https://www.freesound.org")):
             await self.bot.say("Invalid url")
             return        
         else:
