@@ -41,7 +41,6 @@ try:
     import numpy
     numpy_available = True
 except:
-    #sys.stderr.write("Error: Missing package 'python3-matplotlib'\n")
     numpy_available = None
 
 # Check for matplot lib
@@ -56,7 +55,6 @@ try:
     import matplotlib.animation as animation
     matplot_available = True
 except:
-    #sys.stderr.write("Error: Missing package 'python3-matplotlib'\n")
     matplot_available = None
 
 
