@@ -48,11 +48,6 @@ try:
     import matplotlib.pyplot as matplot
     import matplotlib.cbook as cbook
     import matplotlib.image as image
-    #
-
-    import matplotlib.artist as art
-    import matplotlib.dates as mdates
-    import matplotlib.animation as animation
     matplot_available = True
 except:
     matplot_available = None
