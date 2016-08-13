@@ -742,9 +742,15 @@ class Freesound:
         self.bot = bot
         self.settings = fileIO(SETTINGS, 'load')
 
-    @commands.command(pass_context=True, no_pm=False)
+    @commands.group(name="freesound", pass_context=True, no_pm=False)
+    async def _freesound(self, ctx):
+        """Freesound operations"""
+        if ctx.invoked_subcommand is None:
+            await send_cmd_help(ctx)
+
+    @_freesound.command(pass_context=True, no_pm=False)
     @checks.admin_or_permissions(manage_server=True)
-    async def apikey_freesound(self, ctx, key):
+    async def apikey(self, ctx, key):
         """Set the Freesound API key."""
         user = ctx.message.author
         if self.settings["API_KEY"] != "":
@@ -761,12 +767,6 @@ class Freesound:
             fileIO(SETTINGS, "save", self.settings)
             await self.bot.say("{} ` Freesound API key saved...`".format(user.mention))
         self.settings = fileIO(SETTINGS, "load")
-
-    @commands.group(name="freesound", pass_context=True, no_pm=False)
-    async def _freesound(self, ctx):
-        """Freesound operations"""
-        if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
 
     @_freesound.command(pass_context=True, no_pm=False)
     @checks.admin_or_permissions(manage_server=True)
