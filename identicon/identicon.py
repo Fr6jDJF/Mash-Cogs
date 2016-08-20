@@ -273,7 +273,7 @@ class Identicon:
         channel = ctx.message.channel
         
         # Prepare
-        filename = DIR_DATA+str(user)+"-"+str(user_id)+".png"
+        filename = DIR_DATA+"ID-"+str(user_id)+".png"
         seed = round(int(user_id)/40000)
         
         # Generate
