@@ -2,6 +2,6 @@
     "AUTHOR" : "Mash",
     "INSTALL_MSG" : "Done.",
     "NAME" : "imdb",
-    "SHORT" : "Search for movies on imdb",
-    "DESCRIPTION" : "Search for movies on imdb"
+    "SHORT" : "Search for movies on imdb.",
+    "DESCRIPTION" : "Search for movies on imdb.\n Make sure you have provided an API key before using."
 }
