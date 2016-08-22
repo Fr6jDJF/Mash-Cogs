@@ -12,6 +12,7 @@ import os
 
 DIR_DATA = "data/imdb"
 SETTINGS = DIR_DATA+"/settings.json"
+PREFIXES = bot_settings.prefixes
 
 class imdb:
     """Myapifilms.com imdb movie search."""
@@ -21,7 +22,6 @@ class imdb:
         self.settings = fileIO(SETTINGS, "load")
         if self.settings["api_key"] == "":
             print("Cog error: imdb, No API key found, please configure me!")
-        self.PREFIXES = bot_settings.prefixes            
 
     @commands.command(pass_context=True, no_pm=True)
     async def imdb(self, ctx, *title):
@@ -32,7 +32,7 @@ class imdb:
         else:
             if self.settings["api_key"] == "":
                 getKeyUrl = "http://www.myapifilms.com/token.do"
-                await self.bot.say("` This cog wasn't configured properly. If you're the owner, add your API key available from '{}', and use '{}apikey_imdb' to setup`".format(getKeyUrl, self.PREFIXES[0]))
+                await self.bot.say("` This cog wasn't configured properly. If you're the owner, add your API key available from '{}', and use '{}apikey_imdb' to setup`".format(getKeyUrl, PREFIXES[0]))
                 return
             try:
                 await self.bot.send_typing(ctx.message.channel)
