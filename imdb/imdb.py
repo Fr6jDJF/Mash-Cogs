@@ -14,6 +14,8 @@ DIR_DATA = "data/imdb"
 SETTINGS = DIR_DATA+"/settings.json"
 PREFIXES = bot_settings.prefixes
 
+#imdb snippet by BananaWaffles from the early Red, rewritten as cog.
+
 class imdb:
     """Myapifilms.com imdb movie search."""
 
