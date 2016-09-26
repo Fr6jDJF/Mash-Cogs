@@ -76,35 +76,37 @@ class Bartender:
             buy_for.append(member.mention)
         buy_for = " ".join(buy_for)
 
+        if not econ.bank.account_exists(author):
+            await self.bot.reply("You need to open a bank account first.")
+            return
+        if not econ.bank.account_exists(botuser):
+            await self.bot.reply("I have no bank account, register me at the bank.")
+            return
+        if econ.bank.can_spend(author, price):
+            econ.bank.transfer_credits(author, botuser, price)
 
-        try:
-            if econ.bank.can_spend(author, price):
-                econ.bank.transfer_credits(author, botuser, price)
-
-                drinks = ""
-                for d in range(0,amount):
-                    drinks = drinks+icon
-                if buy_for == "":
-                    msg = "There you go mate {}".format(drinks)
+            drinks = ""
+            for d in range(0,amount):
+                drinks = drinks+icon
+            if buy_for == "":
+                msg = "There you go mate {}".format(drinks)
+                msg = emoji.emojize(msg, use_aliases=True)
+                await self.bot.say(msg)
+            else:
+                if amount > 1:
+                    msg = "{0} Have some {1}s from {2}{3}".format(buy_for, drink, author.mention, drinks)
                     msg = emoji.emojize(msg, use_aliases=True)
                     await self.bot.say(msg)
                 else:
-                    if amount > 1:
-                        msg = "{0} Have some {1}s from {2}{3}".format(buy_for, drink, author.mention, drinks)
-                        msg = emoji.emojize(msg, use_aliases=True)
-                        await self.bot.say(msg)
-                    else:
-                        msg ="{0} Have some {1} from {2}{3}".format(buy_for, drink, author.mention, drinks)
-                        msg = emoji.emojize(msg, use_aliases=True)
-                        await self.bot.say(msg)
-            else:
-                try:
-                    text_num = self.numbers[amount-1]
-                except Exception as e:
-                    text_num = str(amount)
-                await self.bot.reply("Sorry mate, you don't have enough money for {1} {2}.\n It costs {3}".format(text_num, drink, price))
-        except NoAccount:
-            await self.bot.reply('You need to open a bank account first.')
+                    msg ="{0} Have some {1} from {2}{3}".format(buy_for, drink, author.mention, drinks)
+                    msg = emoji.emojize(msg, use_aliases=True)
+                    await self.bot.say(msg)
+        else:
+            try:
+                text_num = self.numbers[amount-1]
+            except Exception as e:
+                text_num = str(amount)
+            await self.bot.reply("Sorry mate, you don't have enough money for {1} {2}.\n It costs {3}".format(text_num, drink, price))
 
     @_bar.command(name='list', pass_context=True)
     async def _list(self, ctx):
