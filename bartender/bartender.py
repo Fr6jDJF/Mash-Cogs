@@ -50,7 +50,7 @@ class Bartender:
         author = ctx.message.author
 
         #Get Economy data
-        if self.econ_interlink() != None and self.settings["bar_startus"]:
+        if self.econ_interlink() != None and self.settings["bar_status"]:
             econ = self.econ_interlink()
         else:
             await self.bot.reply("Sorry mate, the bar is closed.")
@@ -128,7 +128,7 @@ class Bartender:
             await self.bot.say("Account opened for {}. Current balance: {}".format(botuser.mention, bank.get_balance(botuser)))
         else:
             await self.bot.say("{} already has an account at the Twentysix bank.".format(botuser.mention))
-        self.settings["bar_startus"] = True
+        self.settings["bar_status"] = True
         dataIO.save_json(SETTINGS, self.settings)
 
     @_bar.command(name='open', pass_context=True)
@@ -136,7 +136,7 @@ class Bartender:
     async def _open(self, ctx):
         """Opens the bar"""
         author = ctx.message.author
-        self.settings["bar_startus"] = True
+        self.settings["bar_status"] = True
         dataIO.save_json(SETTINGS, self.settings)
         await self.bot.reply("The bar is now open!.")
 
@@ -145,7 +145,7 @@ class Bartender:
     async def close(self, ctx):
         """Closes the bar"""
         author = ctx.message.author
-        self.settings["bar_startus"] = False
+        self.settings["bar_status"] = False
         dataIO.save_json(SETTINGS, self.settings)
         await self.bot.reply("The bar is now closed!.")
 
