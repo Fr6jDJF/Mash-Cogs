@@ -54,7 +54,7 @@ class imdb:
                     if simplePlot == "": simplePlot = "Everyone died...."
 
 
-                data = discord.Embed(colour=discord.Colour.red())
+                data = discord.Embed(colour=discord.Colour.yellow())
                 data.add_field(name="Title:", value=str(title), inline=True)
                 data.add_field(name="Released on:", value=year)
 
