@@ -56,7 +56,7 @@ class oboobs:
                 nsfwChan = True
                 break
         try:
-            rdm = random.randint(0, 10162)      
+            rdm = random.randint(0, 10163)      
             search = ("http://api.oboobs.ru/boobs/{}".format(rdm))
             async with aiohttp.get(search) as r:
                 result = await r.json()
