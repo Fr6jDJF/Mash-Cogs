@@ -12,7 +12,7 @@ import os
 
 DIR_DATA = "data/imdb"
 SETTINGS = DIR_DATA+"/settings.json"
-#PREFIXES = bot_settings.p
+#PREFIXES = bot_settings.prefixes~~~~~~
 
 #imdb snippet by BananaWaffles from the early Red, rewritten as cog.
 
@@ -21,7 +21,7 @@ class imdb:
 
     def __init__(self, bot):
         self.bot = bot
-        self.settings = fileIO(SETTINGS, "load")    # will break soon™    # will break soon™      # will break soon™  
+        self.settings = fileIO(SETTINGS, "load")    # will break soon™    # will break soon™  
         if self.settings["api_key"] == "":
             print("Cog error: imdb, No API key found, please configure me!")
 
@@ -34,7 +34,7 @@ class imdb:
         else:
             if self.settings["api_key"] == "":
                 getKeyUrl = "http://www.myapifilms.com/token.do"
-                await self.bot.say("` This cog wasn't configured properly. If you're the owner, add your API key available from '{}', and use '{}apikey_imdb' to setup`".format(getKeyUrl, "[P]"]))
+                await self.bot.say("` This cog wasn't configured properly. If you're the owner, add your API key available from '{}', and use '{}apikey_imdb' to setup`".format(getKeyUrl, "p"))
                 return
             try:
                 await self.bot.send_typing(ctx.message.channel)
@@ -54,7 +54,8 @@ class imdb:
                     if simplePlot == "": simplePlot = "Everyone died...."
 
 
-                data = discord.Embed(colour=discord.Colour.yellow())
+                #data = discord.Embed(colour=discord.Colour.yellow())
+                data = discord.Embed(colour=0xE4BA22)
                 data.add_field(name="Title:", value=str(title), inline=True)
                 data.add_field(name="Released on:", value=year)
 
@@ -79,7 +80,7 @@ class imdb:
                 data.set_thumbnail(url=urlPoster)
                 await self.bot.say(embed=data)
 
-                #Big image, will break someday
+                #Big image, will break soon™
                 find = "._V1_";
                 split_pos = urlPoster.find(find)
                 urlPoster = urlPoster[0:split_pos+5]+".jpg"
