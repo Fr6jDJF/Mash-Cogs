@@ -3,5 +3,6 @@
     "INSTALL_MSG" : "完成",
     "NAME" : "Translated",
     "SHORT" : "Translate some text with use of translated.net.",
-    "DESCRIPTION" : "Translate text with use of translated.net\nMachine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine."
+    "DESCRIPTION" : "Translate text with use of translated.net\nMachine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.",
+    "REQUIREMENTS" : []
 }
