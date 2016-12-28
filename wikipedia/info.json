@@ -3,5 +3,6 @@
     "INSTALL_MSG" : "Done.",
     "NAME" : "Wikipedia Search",
     "SHORT" : "Wiki search",
-    "DESCRIPTION" : "Search for wikipedia articles\nRequires wikipedia module\nDo pip3 install wikipedia to install it."
+    "DESCRIPTION" : "Search for wikipedia articles\nRequires wikipedia module\nDo pip3 install wikipedia to install it.",
+    "REQUIREMENTS" : ["wikipedia"]
 }
