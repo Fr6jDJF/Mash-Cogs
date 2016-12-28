@@ -3,6 +3,7 @@
     "INSTALL_MSG" : "Be aware there is no content filtering of results\nUse at your own risk\nRIP kat.cr » [p]unload torrent",
     "NAME" : "Torrent",
     "SHORT" : "Search torrents at kickass/kat.cr for Linux distro's etc...",
-    "DESCRIPTION" : "Search torrents at kickass/kat.cr for Linux distro's etc..."
+    "DESCRIPTION" : "Search torrents at kickass/kat.cr for Linux distro's etc...",
+    "REQUIREMENTS" : ["ktorrent"]
 }
 
