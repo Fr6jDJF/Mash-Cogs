@@ -4,4 +4,5 @@
     "NAME" : "Bartender",
     "SHORT" : "Buy some drinks at the bar with Red's economy currency.",
     "DESCRIPTION" : "Buy some drinks at the bar with Red's economy currency."
+    "REQUIREMENTS" : ["pillow", "emoji"]
 }
