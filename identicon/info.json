@@ -3,5 +3,6 @@
 "INSTALL_MSG" : "Done.",
 "NAME" : "Identicon",
 "SHORT" : "Generate an avatar based on your Discord ID.",
-"DESCRIPTION" : "Generate an avatar based on your your Discord ID."
+"DESCRIPTION" : "Generate an avatar based on your your Discord ID.",
+"REQUIREMENTS" : ["pillow"]
 }
