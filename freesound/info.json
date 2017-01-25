@@ -4,5 +4,6 @@
 "NAME" : "Freesound.org downloader",
 "SHORT" : "Download SFX from freesound.org to the data/audio/sfx/freesound folder",
 "DESCRIPTION" : "Downloads audio files from freesound.org, and converts them to flac including metadata.\nRequires ffmpeg and a https://www.freesound.org/docs/api/ key.",
+"TAGS" : ["audio", "sfx", "freesound", "music", "sounds"],
 "REQUIREMENTS" : ["mutagen", "numpy", "matplotlib"]
 }
