@@ -4,5 +4,6 @@
     "NAME" : "OpenStreetMaps",
     "SHORT" : "The OpenStreetMaps.org cog",
     "DESCRIPTION" : "Search for maps at openstreetmap.org\nRequirements:\nGeotiler 'pip3 install geotiler --upgrade'\nBeautifulSoup 'pip3 install BeautifulSoup --upgrade'\nImageMagick + Wand http://docs.wand-py.org/en/0.4.3/guide/install.html",
+    "TAGS" : ["maps", "location", "openstreetmaps", "geo"],
     "REQUIREMENTS" : ["geotiler", "BeautifulSoup", "Wand", "ImageMagick"],    
 }
