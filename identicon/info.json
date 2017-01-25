@@ -4,5 +4,6 @@
 "NAME" : "Identicon",
 "SHORT" : "Generate an avatar based on your Discord ID.",
 "DESCRIPTION" : "Generate an avatar based on your your Discord ID.",
+"TAGS" : ["avatar", "discord", "id", "image", "picture"],
 "REQUIREMENTS" : ["pillow"]
 }
