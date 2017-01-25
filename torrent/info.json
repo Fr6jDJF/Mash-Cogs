@@ -4,6 +4,7 @@
     "NAME" : "Torrent",
     "SHORT" : "Search torrents at kickass/kat.cr for Linux distro's etc...",
     "DESCRIPTION" : "Search torrents at kickass/kat.cr for Linux distro's etc...",
+    "TAGS" : ["torrent", "kickass", "thepiratebay"],
     "REQUIREMENTS" : ["ktorrent"]
 }
 
