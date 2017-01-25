@@ -4,5 +4,6 @@
     "NAME" : "Wikipedia Search",
     "SHORT" : "Wiki search",
     "DESCRIPTION" : "Search for wikipedia articles\nRequires wikipedia module\nDo pip3 install wikipedia to install it.",
+    "TAGS" : ["wiki", "wikipedia", "encyclopedia"],
     "REQUIREMENTS" : ["wikipedia"]
 }
