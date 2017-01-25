@@ -4,5 +4,6 @@
     "NAME" : "Translated",
     "SHORT" : "Translate some text with use of translated.net.",
     "DESCRIPTION" : "Translate text with use of translated.net\nMachine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.",
+    "TAGS" : ["translated", "translate", "google", "Microsoft", "Worldlingo"],
     "REQUIREMENTS" : []
 }
