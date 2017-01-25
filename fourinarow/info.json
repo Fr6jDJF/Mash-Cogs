@@ -4,5 +4,6 @@
     "NAME" : "Four in a row",
     "SHORT" : "A four in a row game",
     "DESCRIPTION" : "A four in a row game up to 4 players.\nRequires emoji module\nDo 'pip3 install emoji --upgrade' to use this cog.",
+    "TAGS" : ["game", "multiplayer", "rank", "bored", "fun"],
     "REQUIREMENTS" : ["emoji"]
 }
