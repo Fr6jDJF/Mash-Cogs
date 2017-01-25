@@ -4,5 +4,6 @@
     "NAME" : "imdb",
     "SHORT" : "Search for movies on imdb.",
     "DESCRIPTION" : "Search for movies on imdb.\n Make sure you have provided an API key (http://www.myapifilms.com/token.do)",
+    "TAGS" : ["imdb", "movies", "review", "series", "actors"],
     "REQUIREMENTS" : []
 }
