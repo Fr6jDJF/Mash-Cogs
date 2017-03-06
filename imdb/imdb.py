@@ -76,22 +76,22 @@ class imdb:
                 if urlz != "":
                     moreinfo = ("{}\n[Read more...]({})".format(simplePlot, urlz))
                     data.add_field(name="Plot:", value=moreinfo)
-                data.set_footer(text='\n\n*Respond now with "cover" for a bigger image')
+                data.set_footer(text="\n\n")
                 data.set_thumbnail(url=urlPoster)
                 await self.bot.say(embed=data)
 
                 #Big image, will break soon™
-                find = "._V1_";
-                split_pos = urlPoster.find(find)
-                urlPoster = urlPoster[0:split_pos+5]+".jpg"
+                #find = "._V1_";
+                #split_pos = urlPoster.find(find)
+                #urlPoster = urlPoster[0:split_pos+5]+".jpg"
 
-                response = await self.bot.wait_for_message(timeout=20, author=ctx.message.author)
-                if response is None:
-                    pass
-                else:
-                    response = response.content.lower().strip()
-                if response.startswith(("bigpic", "cover", "big", ":eyeglasses:")):
-                    await self.bot.say(urlPoster)
+                #response = await self.bot.wait_for_message(timeout=20, author=ctx.message.author)
+                #if response is None:
+                #    pass
+                #else:
+                #    response = response.content.lower().strip()
+                #if response.startswith(("bigpic", "cover", "big", ":eyeglasses:")):
+                #    await self.bot.say(urlPoster)
             except discord.HTTPException:
                 await self.bot.say("I need the `Embed links` permission to send this")
             except Exception as e:
