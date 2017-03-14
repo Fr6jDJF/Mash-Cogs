@@ -3,7 +3,7 @@
     "INSTALL_MSG" : "完成",
     "NAME" : "Translated",
     "SHORT" : "Translate some text with use of translated.net.",
-    "DESCRIPTION" : "Translate text with use of translated.net\nMachine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.\nFree, anonymous 1000 words/day, Provide valid email('[p]settr email') and enjoy 10000 words/day."",
+    "DESCRIPTION" : "Translate text with use of translated.net\nMachine Translation provided by Google, Microsoft, Worldlingo or MyMemory customized engine.\nFree, anonymous 1000 words/day, Provide valid email('[p]settr email') and enjoy 10000 words/day.",
     "TAGS" : ["translated", "translate", "google", "Microsoft", "Worldlingo"],
     "REQUIREMENTS" : []
 }
