@@ -16,16 +16,18 @@ import urllib.parse as up
 #import logging
 import aiohttp
 
+
 __author__ = "Mash"
-__version__ = "0.0.11"
+__version__ = "0.0.2"
 
-#ToDo:
 
-#bot output replacement. except translation commands in help output or alias commands to translated lang
-#Channel language
-#Submit corrected sys translations to translated.net(requires translated.net account).
-#Selfbot
-#...
+# ToDo:
+
+# bot output replacement. (exclude translation of commands in help output or alias commands to translated lang).
+# Channel language
+# Submit corrected system translations to repo. lang. db or translated.net(requires translated.net account).
+# Selfbot
+# ...
 
 
 
@@ -36,6 +38,8 @@ __version__ = "0.0.11"
         Free, anonymous usage is limited to 1000 words/day.
         Provide a valid email ('de' parameter), where we can reach you in case of troubles, and enjoy 10000 words/day.
 """
+
+
 DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"
 CH_LANG = DIR_DATA+"/chlang.json"
@@ -78,37 +82,40 @@ class Translated:
             await send_cmd_help(ctx)
             return
 
-        text = " ".join(text)
-        result = await self.translate_text(languageFrom, languageTo, text)
+        lfr_valid, lang_from = self.check_language(self.ISO_LANG, languageFrom)
+        lto_valid, lang_to = self.check_language(self.ISO_LANG, languageTo)
 
-        if result == "invalid language pair":
+        if not (lfr_valid and lto_valid):
             if self.settings["SELFBOT"]:
-                await self.bot.say("`Error Translating, wrong format of language pair`".format(author.mention))
+                await self.bot.say("Error Translating: language pair, wrong format or invalid language.".format(author.mention))
                 return
             else:
-                await self.bot.say("{} `Error Translating, wrong format of language pair, check DM`".format(author.mention))
-
-            lenLang = len(self.ISO_LANG)
-            done = 0
-            msg = ""
-            while (done < lenLang-1):
-                w=done+4
-                while (w > done):
-                    msg = msg + "{} = {}, ".format(self.ISO_LANG[done][0], self.ISO_LANG[done][1])
+                await self.bot.say("{} Error Translating: language pair, wrong format or invalid language. Check DM".format(author.mention))
+                lenLang = len(self.ISO_LANG)
+                done = 0
+                msg = ""
+                while (done < lenLang-1):
+                    w=done+4
+                    while (w > done):
+                        msg = msg + "{} = {}, ".format(self.ISO_LANG[done][0], self.ISO_LANG[done][1])
+                        done += 1
+                    msg = msg + "\n"
+                    if len(msg) > 1500:
+                        msg = "\n```ISO language abbreviations:\n\n{}\n```".format(msg)
+                        await self.bot.send_message(ctx.message.author, msg)
+                        msg = ""
                     done += 1
-                msg = msg + "\n"
-                if len(msg) > 1500:
-                    msg = "\n```ISO language abbreviations:\n\n{}\n```".format(msg)
-                    await self.bot.send_message(ctx.message.author, msg)
-                    msg = ""
-                done += 1
-        elif result == "get error":
-            await self.bot.say("{} `Error Translating`".format(author.mention))
-        elif result != "":
-            if self.settings["SELFBOT"]:
-                await self.bot.say("{}".format(result))
-            else:
-                await self.bot.say("**» {}({}) **{}".format(author, languageTo.lower(), result))
+        else:
+            text = " ".join(text)
+            result = await self.translate_text(lang_from, lang_to, text)
+
+            if result == False:
+                await self.bot.say("{} Error Translating...".format(author.mention))
+            elif result != "":
+                if self.settings["SELFBOT"]:
+                    await self.bot.say("{}".format(result))
+                else:
+                    await self.bot.say("**» {}({}) **{}".format(author, lang_to.lower(), result))
 
 
     #@commands.command(pass_context=True, no_pm=True, hidden=True)
@@ -136,15 +143,17 @@ class Translated:
         if langPair in self.cache:
             if text in self.cache[langPair]:
                 cached = True
-                print("cached")
+                # print("cached")
                 return self.cache[langPair][text]
             else:
                 cached = False
-                print("Not cached")
-        result = "Error"
+                # print("Not cached")
 
         print("\nSYSTRANSLATE")
         result = await self.translate_text(lang_from, lang_to, text)
+        if result is False:
+            # print("systranslate fail")
+            return False
         #result = result.decode('utf8')
         replaceThis = [["** ", "**"], [" **", "**"], ["* ", "*"], [" *", "*"], ["~~ ", "~~"], [" ~~", "~~"], ["__ ", "__"], [" __", "__"], ["``` ", "```"], [" ```", "```"], ["` ", "`"], [" `", "`"], ["&#39;", "'"]]
         replacedResult = result
@@ -170,44 +179,62 @@ class Translated:
             lang_to = lang_to.upper()
             email = self.settings.get("EMAIL", None)
 
-            lfr_valid, lang_from = self.check_language(self.ISO_LANG, lang_from)
-            lto_valid, lang_to = self.check_language(self.ISO_LANG, lang_to)
-
-            if lfr_valid and lto_valid:
-                if email is not None:
-                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de={}".format(text, lang_from, lang_to, email))
-                else:
-                    search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}".format(text, lang_from, lang_to))
-
-                translated = ""
-                try:
-                    #print(search)
-                    async with aiohttp.get(search) as r:
-                        result = await r.json()
-                        #print("\nRESULT\n")
-                        print(result)
-                        translated = result["matches"][0]["translation"]
-                except Exception as e:
-                    #print("get Err")
-                    print(e)
-                    return "get error"
-                    translated = ""
-
-                if translated != "":
-                    if self.settings["DEL_MSG"]:# Input replacement.
-                        try:
-                            await self.bot.delete_message(ctx.message)
-                        except Exception as e:
-                            print("get")
-                            if self.settings["NO_ERR"]:# Disables notification of permission denied 403
-                                print("Translated: Missing permissions (403) @ {}({}).{}({})".format(ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
-                    return translated
-                else:
-                    return False
+            if email is not None:
+                search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}&de={}".format(text, lang_from, lang_to, email))
             else:
-                return "invalid language pair"
+                search = ("http://api.mymemory.translated.net/get?{}&langpair={}|{}".format(text, lang_from, lang_to))
+
+            translated = ""
+            try:
+                #print(search)
+                async with aiohttp.get(search) as r:
+                    result = await r.json()
+                    # print("\nRESULT\n")
+                    # print(result)
+                    translated = result["matches"][0]["translation"]
+            except Exception as e:
+                print(e)
+                return False
+                translated = ""
+
+            if translated != "":
+                if self.settings["DEL_MSG"]:# Input replacement.
+                    try:
+                        await self.bot.delete_message(ctx.message)
+                    except Exception as e:
+                        # print("get")
+                        if self.settings["NO_ERR"]:# Disables notification of permission denied 403
+                            print("Translated: Missing permissions (403) @ {}({}).{}({})".format(ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
+                return translated
+            else:
+                return False
 
 
+    def check_language(self, lang_available, lang_check):
+        availl_lang = len(lang_available)
+        lang_check = lang_check.upper()
+        for m in range(availl_lang):
+            if lang_available[m][1] == lang_check:
+                # print("RFC3066", True, lang_available[m][1])
+                return True, lang_available[m][1]
+            else:
+                if lang_available[m][0].upper() == lang_check:
+                    # print("Fullname", True, lang_available[m][1])
+                    return True, lang_available[m][1]
+                elif  ", " in lang_available[m][0]: # Deal with alliases
+                    alias = lang_available[m][0].split(", ")
+                    for a in alias:
+                        if a.upper() == lang_check:
+                            # print("Aliassed Fullname", True, lang_available[m][1])
+                            return True, lang_available[m][1]
+        return False, None
+
+
+    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    # Moderator cmd
+    #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+    @checks.admin_or_permissions(manage_server=True)
     @commands.group(pass_context=True)
     async def settr(self, ctx):
         """Magic OP commands for translated"""
@@ -223,7 +250,7 @@ class Translated:
             fileIO(SETTINGS, "save", self.settings)
             await self.bot.say("Done..")
         else:
-            await self.bot.say("invalid")
+            await self.bot.say("Invalid")
 
 
     @settr.command(pass_context=True, name="cl", hidden=True)
@@ -291,10 +318,9 @@ class Translated:
             return
 
 
-    @checks.admin_or_permissions(manage_server=True)
     @settr.command(pass_context=True, no_pm=False)
     async def _replace(self, ctx):
-        """Toggle oboobs DEL_MSG for this channel on/off.
+        """Toggle replace input for this channel on/off(req. bot permissions).
         Admin/owner restricted."""
         user = ctx.message.author
         chid = ctx.channel.id
@@ -315,25 +341,6 @@ class Translated:
                 self.settings["DEL_MSG"].append(ctx.message.channel.id)
                 await self.bot.say("{} ` DEL_MSG OFF`".format(user.mention))
         fileIO(SETTINGS, "save", self.settings)
-
-
-    def check_language(self, lang_available, lang_check):
-        availl_lang = len(lang_available)
-        for m in range(availl_lang):
-            if lang_available[m][1] == lang_check:
-                # print("RFC3066", True, lang_available[m][1])
-                return True, lang_available[m][1]
-            else:
-                if lang_available[m][0].upper() == lang_check:
-                    # print("Fullname", True, lang_available[m][1])
-                    return True, lang_available[m][1]
-                elif  ", " in lang_available[m][0]: # Deal with alliases
-                    alias = lang_available[m][0].split(", ")
-                    for a in alias:
-                        if a.upper() == lang_check:
-                            # print("Aliassed Fullname", True, lang_available[m][1])
-                            return True, lang_available[m][1]
-        return False, None
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
