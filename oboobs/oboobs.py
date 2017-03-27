@@ -72,7 +72,7 @@ class oboobs:
             async with aiohttp.get(search) as r:
                 result = await r.json()
                 boob = random.choice(result)
-                boob = "testing"#"http://media.oboobs.ru/{}".format(boob["preview"])
+                boob = "http://media.oboobs.ru/{}".format(boob["preview"])
         except Exception as e:
             await self.bot.reply("Error getting results.")
             return
