@@ -1,4 +1,4 @@
-from .utils.dataIO import fileIO
+from cogs.utils.dataIO import dataIO
 from .utils import checks
 from __main__ import send_cmd_help
 from __main__ import settings as bot_settings
@@ -44,6 +44,7 @@ DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"
 CH_LANG = DIR_DATA+"/chlang.json"
 SETTINGS = DIR_DATA+"/settings.json"
+DEFAULT = {"EMAIL": None, "CHANNELS": {}, "DEL_MSG" : False, "NO_ERR": False, "SELFBOT" : False}
 
 class Translated:
     """Translate text with use of translated.net API.
@@ -52,8 +53,8 @@ class Translated:
 
     def __init__(self, bot):
         self.bot = bot
-        self.settings = fileIO(SETTINGS, "load")
-        self.cache = fileIO(CACHE, "load")
+        self.settings = dataIO.load_json(SETTINGS)
+        self.cache = dataIO.load_json(CACHE)
         # These should be supported by translated.net (RFC3066)
         self.ISO_LANG = [["Abkhazian", "AB"], ["Afar", "AA"], ["Afrikaans", "AF"], ["Albanian", "SQ"], ["Amharic", "AM"], ["Arabic", "AR"], ["Armenian", "HY"], ["Assamese", "AS"], ["Aymara", "AY"],
                                 ["Azerbaijani", "AZ"], ["Bashkir", "BA"], ["Basque", "EU"], ["Bengali, Bangla", "BN"], ["Bhutani", "DZ"], ["Bihari", "BH"], ["Bislama", "BI"], ["Breton", "BR"], ["Bulgarian", "BG"],
@@ -162,7 +163,7 @@ class Translated:
 
         if cachResult and not cached:
             self.cache[langPair][text] = (replacedResult)
-        fileIO(CACHE, "save", self.cache)
+        dataIO.save_json(CACHE, self.cache)
         return replacedResult
 
 
@@ -247,7 +248,7 @@ class Translated:
         """Free, anonymous 1000 words/day, Provide valid email and enjoy 10000 words/day."""
         if re.search(r'[\w.-]+@[\w.-]+.\w+', email):
             self.settings["EMAIL"] = email
-            fileIO(SETTINGS, "save", self.settings)
+            dataIO.save_json(SETTINGS, self.settings)
             await self.bot.say("Done..")
         else:
             await self.bot.say("Invalid")
@@ -273,7 +274,7 @@ class Translated:
             response = response.content.lower().strip()
             if response == "y":
                 self.cache[lang_pair] = {}
-                fileIO(CACHE, "save", self.cache)
+                dataIO.save_json(CACHE, self.cache)
             else:
                 await self.bot.say("Failed translation update.")
                 return
@@ -308,7 +309,7 @@ class Translated:
         response = response.content.lower().strip()
         if response == "y":
             self.cache[lang_pair][text_from] = (text_to)
-            fileIO(CACHE, "save", self.cache)
+            dataIO.save_json(CACHE, self.cache)
             await self.bot.say("Done.")
             return
         elif response != "":
@@ -340,7 +341,7 @@ class Translated:
             if ctx.message.channel not in self.settings["CHANNELS"]:
                 self.settings["DEL_MSG"].append(ctx.message.channel.id)
                 await self.bot.say("{} ` DEL_MSG OFF`".format(user.mention))
-        fileIO(SETTINGS, "save", self.settings)
+        dataIO.save_json(SETTINGS, self.settings)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -354,19 +355,26 @@ def check_folders():
 
 
 def check_files():
-    settings = {"EMAIL": None, "CHANNELS": {}, "DEL_MSG" : False, "NO_ERR": False, "SELFBOT" : False}
-
-    f = SETTINGS
-    if not fileIO(f, "check"):
+    if not os.path.isfile(SETTINGS):
         print("Creating default translated settings.json...")
-        fileIO(f, "save", settings)
+        dataIO.save_json(SETTINGS, DEFAULT)
+    else:  # Key consistency check
+        try:
+            current = dataIO.load_json(SETTINGS)
+        except JSONDecodeError:
+            dataIO.save_json(SETTINGS, DEFAULT)
+            current = dataIO.load_json(SETTINGS)
 
-    cache = {}
+        if current.keys() != DEFAULT.keys():
+            for key in DEFAULT.keys():
+                if key not in current.keys():
+                    current[key] = DEFAULT[key]
+                    print( "Adding " + str(key) + " field to translated settings.json")
+            dataIO.save_json(SETTINGS, DEFAULT)
 
-    f = CACHE
-    if not fileIO(f, "check"):
-        print("Creating translated cache.json...")
-        fileIO(f, "save", cache)
+    if not os.path.isfile(CACHE):
+        print("Creating default translated settings.json...")
+        dataIO.save_json(CACHE, {})
 
 
 def setup(bot):
