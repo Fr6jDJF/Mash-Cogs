@@ -6,13 +6,14 @@ from __main__ import send_cmd_help
 # Sys
 import asyncio
 import aiohttp
+import time
 import random
 import os
 import sys
 
 DIR_DATA = "data/oboobs"
 SETTINGS = DIR_DATA+"/settings.json"
-DEFAULT = {"nsfw_channels": ["133251234164375552"], "nsfw_msg": True, "ama_boobs": 10548, "ama_ass": 4542}# Red's testing chan. nsfw content off by default.
+DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg": True, "last_update": 0,  "ama_boobs": 10548, "ama_ass": 4542}# Red's testing chan. nsfw content off by default.
 
 #API info:
 #example: "/boobs/10/20/rank/" - get 20 boobs elements, start from 10th ordered by rank; noise: "/noise/{count=1; sql limit}/",
@@ -52,38 +53,54 @@ class oboobs:
     async def boobs(self, ctx):
         """Shows some boobs."""
         author = ctx.message.author
-        nsfwChan = False
+        dis_nsfw = None
         for a in self.settings["nsfw_channels"]:
             if a == ctx.message.channel.id:
-                nsfwChan = True
+                if self.settings["invert"]:
+                    dis_nsfw = False
+                else:
+                    dis_nsfw = True
                 break
+        if dis_nsfw is None and not self.settings["invert"]:
+            dis_nsfw = False
+        else:
+            dis_nsfw = True
+
         try:
             rdm = random.randint(0, self.settings["ama_boobs"])
             search = ("http://api.oboobs.ru/boobs/{}".format(rdm))
             async with aiohttp.get(search) as r:
                 result = await r.json()
                 boob = random.choice(result)
-                boob = "http://media.oboobs.ru/{}".format(boob["preview"])
+                boob = "testing"#"http://media.oboobs.ru/{}".format(boob["preview"])
         except Exception as e:
-            await self.bot.say("{} ` Error getting results.`".format(author.mention))
+            await self.bot.reply("Error getting results.")
             return
-        if not nsfwChan:
+        if not dis_nsfw:
             await self.bot.say("{}".format(boob))
         else:
             await self.bot.send_message(ctx.message.author, "{}".format(boob))
             if self.settings["nsfw_msg"]:
-                await self.bot.say("{}` nsfw content is not allowed in this channel, instead I have send you a DM.`".format(author.mention))
+                await self.bot.reply("nsfw content is not allowed in this channel, instead I have send you a DM.")
 
     # Ass
     @commands.command(pass_context=True, no_pm=False)
     async def ass(self, ctx):
         """Shows some ass."""
         author = ctx.message.author
-        nsfwChan = False
+        dis_nsfw = None
         for a in self.settings["nsfw_channels"]:
             if a == ctx.message.channel.id:
-                nsfwChan = True
+                if self.settings["invert"]:
+                    dis_nsfw = False
+                else:
+                    dis_nsfw = True
                 break
+        if dis_nsfw is None and not self.settings["invert"]:
+            dis_nsfw = False
+        else:
+            dis_nsfw = True
+
         try:
             rdm = random.randint(0, self.settings["ama_ass"])
             search = ("http://api.obutts.ru/butts/{}".format(rdm))
@@ -92,54 +109,73 @@ class oboobs:
                 ass = random.choice(result)
                 ass = "http://media.obutts.ru/{}".format(ass["preview"])
         except Exception as e:
-            await self.bot.say("{} ` Error getting results.`".format(author.mention))
+            await self.bot.reply("Error getting results.")
             return
-        if not nsfwChan:
+        if not dis_nsfw:
             await self.bot.say("{}".format(ass))
         else:
             await self.bot.send_message(ctx.message.author, "{}".format(ass))
             if self.settings["nsfw_msg"]:
-                await self.bot.say("{}` nsfw content is not allowed in this channel, instead I have send you a DM.`".format(author.mention))
+                await self.bot.reply("nsfw content is not allowed in this channel, instead I have send you a DM.")
 
     @checks.admin_or_permissions(manage_server=True)
-    @_oboobs.command(pass_context=True, no_pm=False)
+    @_oboobs.command(pass_context=True, no_pm=True)
     async def nsfw(self, ctx):
         """Toggle oboobs nswf for this channel on/off.
         Admin/owner restricted."""
-        user= ctx.message.author
         nsfwChan = None
         # Reset nsfw.
         for a in self.settings["nsfw_channels"]:
             if a == ctx.message.channel.id:
                 nsfwChan = True
                 self.settings["nsfw_channels"].remove(a)
-                await self.bot.say("{} ` nsfw ON`".format(user.mention))
+                await self.bot.reply("nsfw ON")
                 break
         # Set nsfw.
         if not nsfwChan:
             if ctx.message.channel not in self.settings["nsfw_channels"]:
                 self.settings["nsfw_channels"].append(ctx.message.channel.id)
-                await self.bot.say("{} ` nsfw OFF`".format(user.mention))
+                await self.bot.reply("nsfw OFF")
         dataIO.save_json(SETTINGS, self.settings)
+        
+    @checks.admin_or_permissions(manage_server=True)
+    @_oboobs.command(pass_context=True, no_pm=True)
+    async def invert(self, ctx):
+        """Invert nsfw blacklist to whitlist
+        Admin/owner restricted."""
+        if not self.settings["invert"]:
+            self.settings["invert"] = True
+            await self.bot.reply("The nsfw list for all servers is now: inverted.")
+        elif self.settings["invert"]:
+            self.settings["invert"] = False
+            await self.bot.reply("The nsfw list for all servers is now: default(blacklist)")
+        dataIO.save_json(SETTINGS, self.settings)    
 
     @checks.admin_or_permissions(manage_server=True)
-    @_oboobs.command(pass_context=True, no_pm=False)
+    @_oboobs.command(pass_context=True, no_pm=True)
     async def togglemsg(self, ctx):
         """Enable/Disable the oboobs nswf not allowed message
         Admin/owner restricted."""
-        user= ctx.message.author
         # Toggle
         if self.settings["nsfw_msg"]:
             self.settings["nsfw_msg"] = False
-            await self.bot.say("{} ` DM nsfw channel msg is now: Disabled.`".format(user.mention))
+            await self.bot.replay("DM nsfw channel msg is now: Disabled.`")
         elif not self.settings["nsfw_msg"]:
             self.settings["nsfw_msg"] = True
-            await self.bot.say("{} ` DM nsfw channel msg is now: Enabled.`".format(user.mention))
+            await self.bot.reply("DM nsfw channel msg is now: Enabled.")
         dataIO.save_json(SETTINGS, self.settings)
 
     async def boob_knowlegde():
         # KISS
         settings = dataIO.load_json(SETTINGS)
+        now = round(time.time())
+        interval = 86400*2
+        if now >= settings["last_update"]+interval:
+            settings["last_update"] = now
+            dataIO.save_json(SETTINGS, settings)
+        else:
+            return
+            
         async def search(url, curr):
             search = ("{}{}".format(url, curr))
             async with aiohttp.get(search) as r:
@@ -147,7 +183,7 @@ class oboobs:
                 return result
 
         # Upadate boobs len
-        print("Collect boobs...")
+        print("Updating amount of boobs...")
         curr_boobs = settings["ama_boobs"]
         url = "http://api.oboobs.ru/boobs/"
         done = False
@@ -176,7 +212,7 @@ class oboobs:
         print("Total amount of boobs:", settings["ama_boobs"])
 
         # Upadate ass len
-        print("Collect ass...")
+        print("Updating amount of ass...")
         curr_ass = settings["ama_ass"]
         url = "http://api.obutts.ru/butts/"
         done = False
