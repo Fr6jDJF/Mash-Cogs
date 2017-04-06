@@ -120,7 +120,7 @@ class Translated:
 
 
     #@commands.command(pass_context=True, no_pm=True, hidden=True)
-    async def systranslate(self, lang_from, lang_to, text, cachResult=True):
+    async def systranslate(self, lang_from, lang_to, text, cache_result=True):
         #channel = ctx.channel.id
         #print(channel)
         #print(lang_from)
@@ -150,21 +150,21 @@ class Translated:
                 cached = False
                 # print("Not cached")
 
-        print("\nSYSTRANSLATE")
+        #print("\nSYSTRANSLATE")
         result = await self.translate_text(lang_from, lang_to, text)
         if result is False:
             # print("systranslate fail")
             return False
         #result = result.decode('utf8')
-        replaceThis = [["** ", "**"], [" **", "**"], ["* ", "*"], [" *", "*"], ["~~ ", "~~"], [" ~~", "~~"], ["__ ", "__"], [" __", "__"], ["``` ", "```"], [" ```", "```"], ["` ", "`"], [" `", "`"], ["&#39;", "'"]]
-        replacedResult = result
-        for r in range(0, len(replaceThis)):
-            replacedResult = replacedResult.replace(replaceThis[r][0], replaceThis[r][1])
+        replace_this = [["** ", "**"], [" **", "**"], ["* ", "*"], [" *", "*"], ["~~ ", "~~"], [" ~~", "~~"], ["__ ", "__"], [" __", "__"], ["``` ", "```"], [" ```", "```"], ["` ", "`"], [" `", "`"], ["&#39;", "'"]]
+        replaced_result = result
+        for r in range(0, len(replace_this)):
+            replaced_result = replaced_result.replace(replace_this[r][0], replace_this[r][1])
 
-        if cachResult and not cached:
-            self.cache[langPair][text] = (replacedResult)
+        if cache_result and not cached:
+            self.cache[langPair][text] = (replaced_result)
         dataIO.save_json(CACHE, self.cache)
-        return replacedResult
+        return replaced_result
 
 
     async def translate_text(self, lang_from, lang_to, text):
