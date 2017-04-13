@@ -177,9 +177,9 @@ def check_files():
         dataIO.save_json(SETTINGS, settings)
 
 def setup(bot):
-    if not pil_available:
-        raise RuntimeError("You don't have Pillow installed, run\n```pip3 install pillow```And try again")
-        return
+    #if not pil_available:
+    #    raise RuntimeError("You don't have Pillow installed, run\n```pip3 install pillow```And try again")
+    #    return
     if not emoji_available:
         raise RuntimeError("emoji is not installed. Do 'pip3 install emoji --upgrade' to use this cog.")
         return
