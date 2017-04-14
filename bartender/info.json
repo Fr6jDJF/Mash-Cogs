@@ -5,5 +5,5 @@
     "SHORT" : "Buy some drinks at the bar with Red's economy currency.",
     "DESCRIPTION" : "Buy some drinks at the bar with Red's economy currency.",
     "TAGS" : ["alcohol", "beer", "bartender", "buy", "store"],
-    "REQUIREMENTS" : ["pillow", "emoji"]
+    "REQUIREMENTS" : ["emoji"]
 }
