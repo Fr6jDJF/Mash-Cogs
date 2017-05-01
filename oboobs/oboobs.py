@@ -159,7 +159,7 @@ class oboobs:
         # Toggle
         if self.settings["nsfw_msg"]:
             self.settings["nsfw_msg"] = False
-            await self.bot.replay("DM nsfw channel msg is now: Disabled.`")
+            await self.bot.reply("DM nsfw channel msg is now: Disabled.`")
         elif not self.settings["nsfw_msg"]:
             self.settings["nsfw_msg"] = True
             await self.bot.reply("DM nsfw channel msg is now: Enabled.")
