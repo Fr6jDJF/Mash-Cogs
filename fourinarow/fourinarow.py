@@ -484,7 +484,7 @@ class FourInARow:
 
     @commands.command(pass_context=True, no_pm=True)
     async def listtokens(self, ctx):
-        """Shows the avaiable Tokens."""
+        """DM's a list of available tokens."""
         user= ctx.message.author
         await self.bot.say("{} ` Check DM for available tokens.`".format(user.mention))
         msg = await self.msg_available_tokens()
