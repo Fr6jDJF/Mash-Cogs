@@ -436,6 +436,8 @@ class FourInARow:
                                         self.game["CHANNELS"][ctx.message.channel.id]["winner"] = user.id# Needed for update_score.
                                         await self.update_score(ctx)# Update score of all players.
                                         stopGame = True
+                                if not stopGame:
+                                    self.next_turn(ctx, user)                                        
                                 fileIO(GAMES, "save", self.game)
                             await self.delete_message(ctx)
                             await self.draw_board(ctx, comment)
@@ -1127,8 +1129,7 @@ class FourInARow:
         # Add token to board at given column.
         for y in range(BOARDHEIGHT-1, -1, -1):
             if y == freePos:# When indexing reaches free position.
-                self.game["CHANNELS"][ctx.message.channel.id]["board"][y][column] = userToken         
-        self.next_turn(ctx, user)
+                self.game["CHANNELS"][ctx.message.channel.id]["board"][y][column] = userToken
         await self.reset_voting(ctx)
         # Save it.
         self.game["CHANNELS"][ctx.message.channel.id]["PLAYERS"] = CH_PLAYERS
