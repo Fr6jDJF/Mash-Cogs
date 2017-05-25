@@ -8,7 +8,7 @@ GPIO.setup(11, GPIO.IN)         #Read output from PIR motion sensor
 GPIO.setup(3, GPIO.OUT)        #LED output pin
 
 class MentionAlarm:
-    """My custom cog that does stuff!"""
+    """Menion alerm"""
 
     def __init__(self, bot):
         self.bot = bot
