@@ -59,7 +59,8 @@ class MentionAlarm:
             await asyncio.sleep(self.alarm_check_interval)# Spare some time for other tasks :)
 
 def setup(bot):
-    bot.add_cog(MentionAlarm:(bot))
+    n = MentionAlarm(bot)
+    bot.add_cog(n)
     bot.loop.create_task(n.check_alarm())
 
     
