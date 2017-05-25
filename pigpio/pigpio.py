@@ -4,13 +4,13 @@ import RPi.GPIO as GPIO
 import asyncio
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BOARD)
-GPIO.setup(11, GPIO.IN)         #Read output from PIR motion sensor
-GPIO.setup(3, GPIO.OUT)        #LED output pin
+GPIO.setup(11, GPIO.IN)# Input pin
+GPIO.setup(3, GPIO.OUT)# LED output pin
 
 
 # UNTESTED #
-class MentionAlarm:
-    """Mention alerm"""
+class PiGPIO:
+    """PiGPIO"""
 
     def __init__(self, bot):
         self.bot = bot
@@ -32,7 +32,7 @@ class MentionAlarm:
         all_members = self.bot.get_all_members()
         for member in all_members:
             if member.id == user_id:
-            return member
+                return member
         return None        
 
     async def check_alarm(self):   
@@ -60,7 +60,7 @@ class MentionAlarm:
             await asyncio.sleep(self.alarm_check_interval)# Spare some time for other tasks :)
 
 def setup(bot):
-    n = MentionAlarm(bot)
+    n = PiGPIO(bot)
     bot.add_cog(n)
     bot.loop.create_task(n.check_alarm())
 
