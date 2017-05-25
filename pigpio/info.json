@@ -1,0 +1,9 @@
+{
+    "AUTHOR" : "Mash",
+    "INSTALL_MSG" : "Done.",
+    "NAME" : "gpigio",
+    "SHORT" : "the untested pi GPIO cog thing",
+    "DESCRIPTION" : "the untested pi GPIO cog thing",
+    "TAGS" : ["upload", "mention", "alarm", "GPIO", "pi"],
+    "REQUIREMENTS" : ["RPi"]
+}
