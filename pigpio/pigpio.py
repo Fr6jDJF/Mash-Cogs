@@ -15,6 +15,7 @@ class MentionAlarm:
     def __init__(self, bot):
         self.bot = bot
         self.alarm_check_interval = 5
+        # serverid/channelid/userid
         self.notificate = {"54646161561891984" : {
                                         "196481694161616" : ["75787865786786"]
                                     },
