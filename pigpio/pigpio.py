@@ -29,7 +29,7 @@ class MentionAlarm:
         all_members = self.bot.get_all_members()
         for member in all_members:
             if member.id == user_id:
-            return user
+            return member
         return None        
 
     async def check_alarm(self):   
