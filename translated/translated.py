@@ -44,7 +44,7 @@ DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"
 CH_LANG = DIR_DATA+"/chlang.json"
 SETTINGS = DIR_DATA+"/settings.json"
-DEFAULT = {"EMAIL": None, "GUILDS": {}, "DEL_MSG" : False, "NO_ERR": False, "SELFBOT" : False}
+DEFAULT = {"EMAIL": None, "GUILDS": {}, "NO_ERR": False, "SELFBOT" : False}
 
 class Translated:
     """Translate text with use of translated.net API.
