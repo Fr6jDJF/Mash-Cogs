@@ -18,7 +18,7 @@ import aiohttp
 
 
 __author__ = "Mash"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 
 
 # ToDo:
@@ -79,6 +79,10 @@ class Translated:
         author = ctx.message.author
         chid = ctx.message.channel.id
         gid = ctx.message.server.id
+        if not self.check_channel_settings(ctx):
+            await self.bot.say("json Error")
+            return
+        
         replace = self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"]
         no_err = self.settings["NO_ERR"]
         
@@ -235,6 +239,20 @@ class Translated:
                             return True, lang_available[m][1]
         return False, None
 
+    def check_channel_settings(self, ctx):
+        chid = ctx.message.channel.id
+        gid = ctx.message.server.id    
+        try:
+            # Check guild id in json and add guild + channel id
+            if gid not in self.settings["GUILDS"]:
+                self.settings["GUILDS"][gid] = {"CHANNELS": {chid: {"DEL_MSG": False}}}
+            # Check channel id in json and add
+            if chid not in self.settings["GUILDS"][gid]["CHANNELS"]:
+                self.settings["GUILDS"][gid]["CHANNELS"][chid] = {"DEL_MSG": False}
+            return True
+        except Exception as e:
+            print(e)
+            return False  
 
     #-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     # Moderator cmd
@@ -332,15 +350,8 @@ class Translated:
         chid = ctx.message.channel.id
         gid = ctx.message.server.id
 
-        try:
-            # Check guild id in json and add guild + channel id
-            if gid not in self.settings["GUILDS"]:
-                self.settings["GUILDS"][gid] = {"CHANNELS": {chid: {"DEL_MSG": False}}}
-            # Check channel id in json and add
-            if chid not in self.settings["GUILDS"][gid]["CHANNELS"]:
-                self.settings["GUILDS"][gid]["CHANNELS"][chid] = {"DEL_MSG": False}
-        except Exception as e:
-            print(e)
+        if not self.check_channel_settings(ctx):
+            await self.bot.say("json Error")
             return
             
         # Toggle on/off
@@ -355,7 +366,7 @@ class Translated:
         if self.settings["SELFBOT"]:
             reply = "{}".format(toggle)
         else:    
-            reply = "{}{}".format(user.mention, toggle)
+            reply = "{} {}".format(user.mention, toggle)
             
         await self.bot.say(reply)
         dataIO.save_json(SETTINGS, self.settings)
