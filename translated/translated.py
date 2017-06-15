@@ -346,10 +346,18 @@ class Translated:
         # Toggle on/off
         if self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] == False:
             self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] = True
-            await self.bot.say("{} ` DEL_MSG ON`".format(user.mention))
+            toggle = "` DEL_MSG ON`"
         else:
             self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] = False
-            await self.bot.say("{} ` DEL_MSG OFF`".format(user.mention))
+            toggle = "` DEL_MSG OFF`"
+        
+        # Selfbot/Regular output
+        if self.settings["SELFBOT"]:
+            reply = "{}".format(toggle)
+        else:    
+            reply = "{}{}".format(user.mention, toggle)
+            
+        await self.bot.say(reply)
         dataIO.save_json(SETTINGS, self.settings)
 
 
@@ -390,3 +398,4 @@ def setup(bot):
     check_folders()
     check_files()
     bot.add_cog(Translated(bot))
+
