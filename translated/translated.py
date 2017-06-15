@@ -44,7 +44,7 @@ DIR_DATA = "data/translated"
 CACHE = DIR_DATA+"/cache.json"
 CH_LANG = DIR_DATA+"/chlang.json"
 SETTINGS = DIR_DATA+"/settings.json"
-DEFAULT = {"EMAIL": None, "CHANNELS": {}, "DEL_MSG" : False, "NO_ERR": False, "SELFBOT" : False}
+DEFAULT = {"EMAIL": None, "GUILDS": {}, "DEL_MSG" : False, "NO_ERR": False, "SELFBOT" : False}
 
 class Translated:
     """Translate text with use of translated.net API.
@@ -77,8 +77,11 @@ class Translated:
     async def translate(self, ctx, languageFrom, languageTo,  *text):
         """Translate text with use of translated.net \n *[lang1 lang2] + [Text to translate]"""
         author = ctx.message.author
-        #channel = ctx.channel.id
-
+        chid = ctx.message.channel.id
+        gid = ctx.message.server.id
+        replace = self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"]
+        no_err = self.settings["NO_ERR"]
+        
         if text == ():
             await send_cmd_help(ctx)
             return
@@ -88,10 +91,10 @@ class Translated:
 
         if not (lfr_valid and lto_valid):
             if self.settings["SELFBOT"]:
-                await self.bot.say("Error Translating: language pair, wrong format or invalid language.".format(author.mention))
+                await self.bot.say("Error Translating: Invalid language pair, wrong format or nonsense language.".format(author.mention))
                 return
             else:
-                await self.bot.say("{} Error Translating: language pair, wrong format or invalid language. Check DM".format(author.mention))
+                await self.bot.say("{} Error Translating: Invalid language pair, wrong format or nonsense language. Check DM".format(author.mention))
                 lenLang = len(self.ISO_LANG)
                 done = 0
                 msg = ""
@@ -108,15 +111,24 @@ class Translated:
                     done += 1
         else:
             text = " ".join(text)
-            result = await self.translate_text(lang_from, lang_to, text)
+            result = await self.translate_text(lang_from, lang_to, text, ctx, replace, no_err)
 
             if result == False:
                 await self.bot.say("{} Error Translating...".format(author.mention))
             elif result != "":
+                # Input replacement.
+                if replace:
+                    try:
+                        await self.bot.delete_message(ctx.message)
+                    except Exception as e:
+                        print(e)
+                        if no_err:# Disables notification of permission denied 403
+                            print("Translated: Missing permissions (403) @ {}({}).{}({})".format(ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
+                # Selfbot/Regular output
                 if self.settings["SELFBOT"]:
                     await self.bot.say("{}".format(result))
                 else:
-                    await self.bot.say("**» {}({}) **{}".format(author, lang_to.lower(), result))
+                    await self.bot.say("**» {}({}) **{}".format(author, lang_to.lower(), result))             
 
 
     #@commands.command(pass_context=True, no_pm=True, hidden=True)
@@ -167,7 +179,7 @@ class Translated:
         return replaced_result
 
 
-    async def translate_text(self, lang_from, lang_to, text):
+    async def translate_text(self, lang_from, lang_to, text, ctx=None, replace=False, no_err=False):
         if text == ():
             return "empty"
         else:
@@ -199,13 +211,6 @@ class Translated:
                 translated = ""
 
             if translated != "":
-                if self.settings["DEL_MSG"]:# Input replacement.
-                    try:
-                        await self.bot.delete_message(ctx.message)
-                    except Exception as e:
-                        # print("get")
-                        if self.settings["NO_ERR"]:# Disables notification of permission denied 403
-                            print("Translated: Missing permissions (403) @ {}({}).{}({})".format(ctx.message.server, ctx.message.server.id, ctx.message.channel, ctx.message.channel.id))
                 return translated
             else:
                 return False
@@ -320,27 +325,31 @@ class Translated:
 
 
     @settr.command(pass_context=True, no_pm=False)
-    async def _replace(self, ctx):
+    async def replace(self, ctx):
         """Toggle replace input for this channel on/off(req. bot permissions).
         Admin/owner restricted."""
         user = ctx.message.author
-        chid = ctx.channel.id
-        dmesf = None
-        # Reset DEL_MSG.
-        if chid not in self.settings["CHANNELS"]:
-            self.settings["CHANNELS"].append(chid)
-            self.settings["CHANNELS"][chid]["DEL_MSG"] = False
-            if chid["DEL_MSG"] == False:
-                dmesf = True
-                self.settings[chid]["DEL_MSG"] = False
-                #self.settings["DEL_MSG"].remove(a)
-                await self.bot.say("{} ` DEL_MSG ON`".format(user.mention))
-                return
-        # Set DEL_MSG.
-        if not dmesf:
-            if ctx.message.channel not in self.settings["CHANNELS"]:
-                self.settings["DEL_MSG"].append(ctx.message.channel.id)
-                await self.bot.say("{} ` DEL_MSG OFF`".format(user.mention))
+        chid = ctx.message.channel.id
+        gid = ctx.message.server.id
+
+        try:
+            # Check guild id in json and add guild + channel id
+            if gid not in self.settings["GUILDS"]:
+                self.settings["GUILDS"][gid] = {"CHANNELS": {chid: {"DEL_MSG": False}}}
+            # Check channel id in json and add
+            if chid not in self.settings["GUILDS"][gid]["CHANNELS"]:
+                self.settings["GUILDS"][gid]["CHANNELS"][chid] = {"DEL_MSG": False}
+        except Exception as e:
+            print(e)
+            return
+            
+        # Toggle on/off
+        if self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] == False:
+            self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] = True
+            await self.bot.say("{} ` DEL_MSG ON`".format(user.mention))
+        else:
+            self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"] = False
+            await self.bot.say("{} ` DEL_MSG OFF`".format(user.mention))
         dataIO.save_json(SETTINGS, self.settings)
 
 
@@ -381,4 +390,3 @@ def setup(bot):
     check_folders()
     check_files()
     bot.add_cog(Translated(bot))
-
