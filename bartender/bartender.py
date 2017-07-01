@@ -68,7 +68,7 @@ class Bartender:
                 available = True
                 break
         if not available:
-            await self.bot.reply("I'm sorry to dissapoint you, we don't serve {}".format(drink))
+            await self.bot.reply("I'm sorry to disappoint you, we don't serve {}".format(drink))
             return
 
         buy_for = []
