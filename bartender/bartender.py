@@ -106,7 +106,7 @@ class Bartender:
                 text_num = self.numbers[amount-1]
             except Exception as e:
                 text_num = str(amount)
-            await self.bot.reply("Sorry mate, you don't have enough money for {1} {2}.\n It costs {3}".format(text_num, drink, price))
+            await self.bot.reply("Sorry mate, you don't have enough money for {0} {1}.\n It costs {2}".format(text_num, drink, price))
 
     @_bar.command(name='list', pass_context=True)
     async def _list(self, ctx):
