@@ -205,10 +205,17 @@ class Translated:
             try:
                 #print(search)
                 async with aiohttp.get(search) as r:
-                    result = await r.json()
-                    # print("\nRESULT\n")
-                    # print(result)
-                    translated = result["matches"][0]["translation"]
+                    result = await r.json()#responseStatus, responseData[translatedText], exception_code, responseDetails, matches
+                    #print(result)
+                    if "responseStatus" in result:
+                        #print(type(result["responseStatus"]))
+                        #print(result["responseStatus"])
+                        if str(result["responseStatus"]) != "200":# responseStatus can be int or str
+                            print("Translated: {} - {}".format( result["responseStatus"], result["responseDetails"]))
+                    if result["matches"] != "" and len(result["matches"]) >= 1:
+                        translated = result["matches"][0]["translation"]                   
+                    else:
+                        print ("Translated: No content for:\n{}-{}\n{}".format(lang_to, lang_from, text))
             except Exception as e:
                 print(e)
                 return False
