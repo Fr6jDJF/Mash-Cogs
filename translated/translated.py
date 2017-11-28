@@ -55,6 +55,7 @@ class Translated:
         self.bot = bot
         self.settings = dataIO.load_json(SETTINGS)
         self.cache = dataIO.load_json(CACHE)
+        self.session = aiohttp.ClientSession()
         # These should be supported by translated.net (RFC3066)
         self.ISO_LANG = [["Abkhazian", "AB"], ["Afar", "AA"], ["Afrikaans", "AF"], ["Albanian", "SQ"], ["Amharic", "AM"], ["Arabic", "AR"], ["Armenian", "HY"], ["Assamese", "AS"], ["Aymara", "AY"],
                                 ["Azerbaijani", "AZ"], ["Bashkir", "BA"], ["Basque", "EU"], ["Bengali, Bangla", "BN"], ["Bhutani", "DZ"], ["Bihari", "BH"], ["Bislama", "BI"], ["Breton", "BR"], ["Bulgarian", "BG"],
@@ -72,6 +73,9 @@ class Translated:
                                 ["Thai", "TH"], ["Tibetan", "BO"], ["Tigrinya", "TI"], ["Tonga", "TO"], ["Tsonga", "TS"], ["Turkish", "TR"], ["Turkmen", "TK"], ["Twi", "TW"], ["Ukrainian", "UK"], ["Urdu", "UR"],
                                 ["Uzbek", "UZ"], ["Vietnamese", "VI"], ["Volapuk", "VO"], ["Welsh", "CY"], ["Wolof", "WO"], ["Xhosa", "XH"], ["Yiddish", "JI"], ["Yoruba", "YO"], ["Zulu", "ZU"]]
 
+    def __unload(self):
+        self.session.close()
+
 
     @commands.command(pass_context=True, no_pm=False)
     async def translate(self, ctx, languageFrom, languageTo,  *text):
@@ -82,10 +86,10 @@ class Translated:
         if not self.check_channel_settings(ctx):
             await self.bot.say("json Error")
             return
-        
+
         replace = self.settings["GUILDS"][gid]["CHANNELS"][chid]["DEL_MSG"]
         no_err = self.settings["NO_ERR"]
-        
+
         if text == ():
             await send_cmd_help(ctx)
             return
@@ -204,7 +208,7 @@ class Translated:
             translated = ""
             try:
                 #print(search)
-                async with aiohttp.get(search) as r:
+                async with self.session.get(search) as r:
                     result = await r.json()#responseStatus, responseData[translatedText], exception_code, responseDetails, matches
                     #print(result)
                     if "responseStatus" in result:
