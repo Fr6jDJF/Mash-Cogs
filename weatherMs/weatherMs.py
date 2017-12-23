@@ -22,6 +22,8 @@ class weatherMs:
                 
     @commands.command(no_pm=True, pass_context=False)
     async def temp(self, *, weather_station):
+        """Make sure to get your own API key and put it into data/weather/settings.json
+        \nYou can get an API key from: www.wunderground.com/weather/api/"""        
         target = weather_station.split(".")
         #print(target)
         #print(len(target))
@@ -37,8 +39,7 @@ class weatherMs:
         elif country  == None or location == None:
             await self.bot.say("`Please use a US zip code or format like: NY.new york, fr.paris\nIf the default country is set to your requesting location just '!temp city' will do.\nThe the default country is set to: {} `".format(self.settings["defCountry"]))
             return
-        """Make sure to get your own API key and put it into data/weather/settings.json
-        \nYou can get an API key from: www.wunderground.com/weather/api/"""
+
         if country is None:
             country = self.settings["defCountry"]
         url = "http://api.wunderground.com/api/" + self.settings['api_key'] + "/conditions/q/" + country + "/" + location +".json"
