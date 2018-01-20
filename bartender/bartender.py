@@ -1,5 +1,3 @@
-# Original cog by Mash, cleaned up and updated to new economy/dataIO by CalebJ
-
 from .utils.dataIO import dataIO
 from .utils import checks
 from .economy import NoAccount
@@ -22,8 +20,13 @@ except:
     emoji_available = False
 
 
+__author__ = "Mash"
+__version__ = "1.0.3"
+
+
 DIR_DATA = "data/bartender"
 SETTINGS = DIR_DATA+"/settings.json"
+ITEMS = DIR_DATA+"/items.json"
 BACKUP = DIR_DATA+"/bank_backup.json"
 BANK = "data/economy/bank.json"
 
@@ -32,7 +35,7 @@ class Bartender:
     def __init__(self,bot):
         self.bot = bot
         self.settings = dataIO.load_json(SETTINGS)
-        self.items = [["beer", ":beer:", 2], ["wine", ":wine_glass:", 2], ["cocktail", ":cocktail:", 4], ["tropical", ":tropical_drink:", 5], ["sake", ":sake:", 4], ["champagne", ":champagne:", 30], ["tea", ":tea:", 1], ["coffee", ":coffee:", 1]]
+        self.items = dataIO.load_json(ITEMS)
         self.numbers = ["one", "two", "tree", "four", "five", "six", "seven", "eight", "nine", "ten"]
 
     @commands.group(name="bar", pass_context=True, no_pm=False)
@@ -175,6 +178,12 @@ def check_files():
     if not dataIO.is_valid_json(SETTINGS):
         print("Creating settings.json")
         dataIO.save_json(SETTINGS, settings)
+
+    items = [["beer", ":beer:", 2], ["wine", ":wine_glass:", 2], ["cocktail", ":cocktail:", 4], ["tropical", ":tropical_drink:", 5], ["sake", ":sake:", 4], ["champagne", ":champagne:", 30], ["tea", ":tea:", 1], ["coffee", ":coffee:", 1]]
+
+    if not dataIO.is_valid_json(ITEMS):
+        print("Creating items.json")
+        dataIO.save_json(ITEMS, items)        
 
 def setup(bot):
     #if not pil_available:
