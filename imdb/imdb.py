@@ -42,25 +42,26 @@ class imdb:
                 await self.bot.send_typing(ctx.message.channel)
                 movieTitle = "+".join(title)
                 search = "http://api.myapifilms.com/imdb/title?format=json&title=" + movieTitle + "&token=" + self.settings["api_key"]
-                async with aiohttp.get(search) as r:
-                    result = await r.json()
-                    title = result['data']['movies'][0]['title']
-                    year = result['data']['movies'][0]['year']
-                    if year == "": 
-                        year = "????"
-                    rating = result['data']['movies'][0]['rating']
-                    rating = rating.replace("," , ".")
-                    if rating == "":
-                        rating = "-"
-                    else:
-                        rating = float(rating)
-                    urlz = result['data']['movies'][0]['urlIMDB']
-                    urlPoster = result['data']['movies'][0]['urlPoster']
-                    if urlPoster == "":
-                        urlPoster = "http://instagram.apps.wix.com/bundles/wixinstagram/images/ge/no_media.png"
-                    simplePlot = result['data']['movies'][0]['simplePlot']
-                    if simplePlot == "":
-                        simplePlot = "Everyone died...."
+                async with aiohttp.ClientSession() as session:
+                    async with session.get(search, timeout=90) as r:
+                        result = await r.json()
+                        title = result['data']['movies'][0]['title']
+                        year = result['data']['movies'][0]['year']
+                        if year == "": 
+                            year = "????"
+                        rating = result['data']['movies'][0]['rating']
+                        rating = rating.replace("," , ".")
+                        if rating == "":
+                            rating = "-"
+                        else:
+                            rating = float(rating)
+                        urlz = result['data']['movies'][0]['urlIMDB']
+                        urlPoster = result['data']['movies'][0]['urlPoster']
+                        if urlPoster == "":
+                            urlPoster = "http://instagram.apps.wix.com/bundles/wixinstagram/images/ge/no_media.png"
+                        simplePlot = result['data']['movies'][0]['simplePlot']
+                        if simplePlot == "":
+                            simplePlot = "Everyone died...."
 
 
                 #data = discord.Embed(colour=discord.Colour.yellow())
