@@ -1,5 +1,5 @@
 import discord
-from discord.ext import commands
+from redbot.core import commands
 from redbot.core import checks, Config
 # Sys
 import asyncio
@@ -8,9 +8,9 @@ import time
 import random
 import os
 import sys
+import datetime
 
-
-DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg": True, "last_update": 0,  "ama_boobs": 10548, "ama_ass": 4542}# Red's testing chan. nsfw content off by default.
+DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg": True, "last_update": 0,  "ama_boobs": 12250, "ama_ass": 5991}# Red's testing chan. nsfw content off by default.
 
 #API info:
 #example: "/boobs/10/20/rank/" - get 20 boobs elements, start from 10th ordered by rank; noise: "/noise/{count=1; sql limit}/",
@@ -29,7 +29,12 @@ DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg"
 #example: "/butts/vote/6202/minus/" - negative vote for butts with id 6202; vote for noise: "/noise/vote/{id=0}/{operation=plus;[plus,minus]}/",
 #example: "/noise/vote/57/minus/" - negative vote for noise with id 57;
 
-class OboobsC:
+#Credits:
+#Alexhel(pushed oBoobs to v3.0.0rc1), 
+
+BaseCog = getattr(commands, "Cog", object)
+
+class OboobsC(BaseCog):
     """The oboobs/obutts.ru NSFW pictures of nature cog.
     https://github.com/Canule/Mash-Cogs
     """
@@ -172,15 +177,18 @@ class OboobsC:
                 res_dc = await search(url, q+1)
                 if res_dc == []:
                     await self.settings.ama_boobs.set(reachable)
+                    done = True
                     break
                 else:
                     await asyncio.sleep(1) # Trying to be a bit gentle for the api.
                     continue
             elif res == []:
                 step = round(step/2)
+                '''
                 if step <= 1:
                     await self.settings.ama_boobs.set(curr_boobs)
                     done = True
+                    '''
             await asyncio.sleep(1)
         print("Total amount of boobs:", await self.settings.ama_boobs())
 
@@ -200,17 +208,21 @@ class OboobsC:
                 res_dc = await search(url, q+1)
                 if res_dc == []:
                     await self.settings.ama_ass.set(reachable)
+                    done = True 
                     break
                 else:
                     await asyncio.sleep(1)
                     continue
             elif res == []:
                 step = round(step/2)
+                """
                 if step <= 1:
-                    await self.settings.ama_ass.set(curr_ass)
+                    #await self.settings.ama_ass.set(curr_ass)
                     done = True
+                    """
             await asyncio.sleep(1)
+            '''
         if await self.settings.ama_ass() == 0:
             await self.settings.ama_ass.set(5500)
+            '''
         print("Total amount of ass:", await self.settings.ama_ass())
-
