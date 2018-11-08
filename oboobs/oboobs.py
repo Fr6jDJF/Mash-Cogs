@@ -1,8 +1,6 @@
 import discord
-from discord.ext import commands
-from cogs.utils.dataIO import dataIO
-from .utils import checks
-from __main__ import send_cmd_help
+from redbot.core import commands
+from redbot.core import checks, Config
 # Sys
 import asyncio
 import aiohttp
@@ -10,10 +8,9 @@ import time
 import random
 import os
 import sys
+import datetime
 
-DIR_DATA = "data/oboobs"
-SETTINGS = DIR_DATA+"/settings.json"
-DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg": True, "last_update": 0,  "ama_boobs": 10548, "ama_ass": 4542}# Red's testing chan. nsfw content off by default.
+DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg": True, "last_update": 0,  "ama_boobs": 12250, "ama_ass": 5991}# Red's testing chan. nsfw content off by default.
 
 #API info:
 #example: "/boobs/10/20/rank/" - get 20 boobs elements, start from 10th ordered by rank; noise: "/noise/{count=1; sql limit}/",
@@ -32,240 +29,201 @@ DEFAULT = {"nsfw_channels": ["133251234164375552"], "invert" : False, "nsfw_msg"
 #example: "/butts/vote/6202/minus/" - negative vote for butts with id 6202; vote for noise: "/noise/vote/{id=0}/{operation=plus;[plus,minus]}/",
 #example: "/noise/vote/57/minus/" - negative vote for noise with id 57;
 
-class oboobs:
+
+#Credis:
+#Mash, lexhel(Red 3.0.0rc1), 
+
+BaseCog = getattr(commands, "Cog", object)
+
+class OboobsC(BaseCog):
     """The oboobs/obutts.ru NSFW pictures of nature cog.
     https://github.com/Canule/Mash-Cogs
     """
 
     def __init__(self, bot):
         self.bot = bot
-        self.settings = dataIO.load_json(SETTINGS)
+        self.settings = Config.get_conf(self, identifier=69)
+        default_global = {
+            "ama_ass": 0,
+            "ama_boobs": 0,
+            "last_update": 0
+        }
+        default_guild = {
+            "invert": False,
+            "nsfw_channels" : [],
+            "nsfw_msg": True
+        }
+        self.settings.register_guild(**default_guild)
+        self.settings.register_global(**default_global)
+
+    async def get(self, url):
+        async with aiohttp.ClientSession() as session:
+            async with session.get(url) as response:
+                rep = await response.json()
+                return rep
 
     @commands.group(name="oboobs", pass_context=True)
     async def _oboobs(self, ctx):
         """The oboobs/obutts.ru pictures of nature cog."""
         if ctx.invoked_subcommand is None:
-            await send_cmd_help(ctx)
+            await ctx.send_help()
             return
 
     # Boobs
-    @commands.command(pass_context=True, no_pm=False)
+    @commands.command(no_pm=True)
     async def boobs(self, ctx):
         """Shows some boobs."""
-        author = ctx.message.author
-        dis_nsfw = None
-        for a in self.settings["nsfw_channels"]:
-            if a == ctx.message.channel.id:
-                if self.settings["invert"]:
-                    dis_nsfw = False
-                else:
-                    dis_nsfw = True
-                break
-        if dis_nsfw is None and not self.settings["invert"]:
-            dis_nsfw = False
-        else:
-            dis_nsfw = True
-
         try:
-            rdm = random.randint(0, self.settings["ama_boobs"])
+            rdm = random.randint(0, await self.settings.ama_boobs())
             search = ("http://api.oboobs.ru/boobs/{}".format(rdm))
-            async with aiohttp.get(search) as r:
-                result = await r.json()
-                boob = random.choice(result)
-                boob = "http://media.oboobs.ru/{}".format(boob["preview"])
+            result = await self.get(search)
+            tmp = random.choice(result)
+            print(result)
+            boob = "http://media.oboobs.ru/{}".format(tmp["preview"])
         except Exception as e:
-            await self.bot.reply("Error getting results.")
-            return
-        if not dis_nsfw:
-            await self.bot.say("{}".format(boob))
-        else:
-            await self.bot.send_message(ctx.message.author, "{}".format(boob))
-            if self.settings["nsfw_msg"]:
-                await self.bot.reply("nsfw content is not allowed in this channel, instead I have send you a DM.")
+             await ctx.send("Error getting results.\n{}".format(e))
+             return
+        if ctx.channel.is_nsfw():
+            emb = discord.Embed(title="Boobs")
+            emb.set_image(url=boob)
+            await ctx.send(embed=emb)
 
     # Ass
     @commands.command(pass_context=True, no_pm=False)
     async def ass(self, ctx):
         """Shows some ass."""
-        author = ctx.message.author
-        dis_nsfw = None
-        for a in self.settings["nsfw_channels"]:
-            if a == ctx.message.channel.id:
-                if self.settings["invert"]:
-                    dis_nsfw = False
-                else:
-                    dis_nsfw = True
-                break
-        if dis_nsfw is None and not self.settings["invert"]:
-            dis_nsfw = False
-        else:
-            dis_nsfw = True
-
         try:
-            rdm = random.randint(0, self.settings["ama_ass"])
+            rdm = random.randint(0, await self.settings.ama_ass())
             search = ("http://api.obutts.ru/butts/{}".format(rdm))
-            async with aiohttp.get(search) as r:
-                result = await r.json()
-                ass = random.choice(result)
-                ass = "http://media.obutts.ru/{}".format(ass["preview"])
+            result = await self.get(search)
+            tmp = random.choice(result)
+            ass = "http://media.obutts.ru/{}".format(tmp["preview"])
         except Exception as e:
-            await self.bot.reply("Error getting results.")
+            await ctx.send("Error getting results.\n{}".format(e))
             return
-        if not dis_nsfw:
-            await self.bot.say("{}".format(ass))
-        else:
-            await self.bot.send_message(ctx.message.author, "{}".format(ass))
-            if self.settings["nsfw_msg"]:
-                await self.bot.reply("nsfw content is not allowed in this channel, instead I have send you a DM.")
+        if ctx.channel.is_nsfw():
+            emb = discord.Embed(title="Ass")
+            emb.set_image(url=ass)
+            await ctx.send(embed=emb)
+
 
     @checks.admin_or_permissions(manage_server=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def nsfw(self, ctx):
         """Toggle oboobs nswf for this channel on/off.
         Admin/owner restricted."""
-        nsfwChan = None
+        nsfwChan = False
         # Reset nsfw.
-        for a in self.settings["nsfw_channels"]:
+        chans = await self.settings.guild(ctx.guild).nsfw_channels()
+        for a in chans:
             if a == ctx.message.channel.id:
                 nsfwChan = True
-                self.settings["nsfw_channels"].remove(a)
-                await self.bot.reply("nsfw ON")
+                chans.remove(a)
+                await self.settings.guild(ctx.guild).nsfw_channels.set(chans)
+                await ctx.send("nsfw ON")
                 break
         # Set nsfw.
         if not nsfwChan:
-            if ctx.message.channel not in self.settings["nsfw_channels"]:
-                self.settings["nsfw_channels"].append(ctx.message.channel.id)
-                await self.bot.reply("nsfw OFF")
-        dataIO.save_json(SETTINGS, self.settings)
+            if ctx.message.channel not in chans:
+                chans.append(ctx.message.channel.id)
+                await self.settings.guild(ctx.guild).nsfw_channels.set(chans)
+                await ctx.send("nsfw OFF")
         
     @checks.admin_or_permissions(manage_server=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def invert(self, ctx):
-        """Invert nsfw blacklist to whitlist
+        """Invert nsfw blacklist to whitelist
         Admin/owner restricted."""
-        if not self.settings["invert"]:
-            self.settings["invert"] = True
-            await self.bot.reply("The nsfw list for all servers is now: inverted.")
-        elif self.settings["invert"]:
-            self.settings["invert"] = False
-            await self.bot.reply("The nsfw list for all servers is now: default(blacklist)")
-        dataIO.save_json(SETTINGS, self.settings)    
+        if not await self.settings.guild(ctx.guild).invert():
+            await self.settings.guild(ctx.guild).invert.set(True)
+            await ctx.send("The nsfw list for all servers is now: inverted.")
+        elif await self.settings.guild(ctx.guild).invert():
+            await self.settings.guild(ctx.guild).invert.set(False)
+            await ctx.send("The nsfw list for this server is now: default(blacklist)")
 
-    @checks.admin_or_permissions(manage_server=True)
-    @_oboobs.command(pass_context=True, no_pm=True)
-    async def togglemsg(self, ctx):
-        """Enable/Disable the oboobs nswf not allowed message
-        Admin/owner restricted."""
-        # Toggle
-        if self.settings["nsfw_msg"]:
-            self.settings["nsfw_msg"] = False
-            await self.bot.reply("DM nsfw channel msg is now: Disabled.`")
-        elif not self.settings["nsfw_msg"]:
-            self.settings["nsfw_msg"] = True
-            await self.bot.reply("DM nsfw channel msg is now: Enabled.")
-        dataIO.save_json(SETTINGS, self.settings)
+    @checks.is_owner()
+    @_oboobs.command(hidden=True)
+    async def update(self, ctx):
+        await ctx.send("Starting update ...")
+        await self.boob_knowlegde()
+        await ctx.send("Looks done !")
 
-    async def boob_knowlegde():
-        # KISS
-        settings = dataIO.load_json(SETTINGS)
+    async def boob_knowlegde(self):
+        #KISS
+        last_update = await self.settings.last_update()
         now = round(time.time())
         interval = 86400*2
-        if now >= settings["last_update"]+interval:
-            settings["last_update"] = now
-            dataIO.save_json(SETTINGS, settings)
+        if now >= last_update+interval:
+            await self.settings.last_update.set(now)
         else:
             return
             
         async def search(url, curr):
             search = ("{}{}".format(url, curr))
-            async with aiohttp.get(search) as r:
-                result = await r.json()
-                return result
+            return await self.get(search)
 
         # Upadate boobs len
         print("Updating amount of boobs...")
-        curr_boobs = settings["ama_boobs"]
+        curr_boobs = await self.settings.ama_boobs()
         url = "http://api.oboobs.ru/boobs/"
         done = False
         reachable = curr_boobs
         step = 50
         while not done:
             q = reachable+step
-            #print("Searching for boobs:", q)
+            print("Searching for boobs:", q)
             res = await search(url, q)
             if res != []:
                 reachable = q
                 res_dc = await search(url, q+1)
                 if res_dc == []:
-                    settings["ama_boobs"] = reachable
-                    dataIO.save_json(SETTINGS, settings)
+                    await self.settings.ama_boobs.set(reachable)
+                    done = True
                     break
                 else:
-                    await asyncio.sleep(2.5) # Trying to be a bit gentle for the api.
+                    await asyncio.sleep(1) # Trying to be a bit gentle for the api.
                     continue
             elif res == []:
                 step = round(step/2)
+                '''
                 if step <= 1:
-                    settings["ama_boobs"] = curr_boobs
+                    await self.settings.ama_boobs.set(curr_boobs)
                     done = True
-            await asyncio.sleep(2.5)
-        print("Total amount of boobs:", settings["ama_boobs"])
+                    '''
+            await asyncio.sleep(1)
+        print("Total amount of boobs:", await self.settings.ama_boobs())
 
         # Upadate ass len
         print("Updating amount of ass...")
-        curr_ass = settings["ama_ass"]
+        curr_ass = await self.settings.ama_ass()
         url = "http://api.obutts.ru/butts/"
         done = False
         reachable = curr_ass
         step = 50
         while not done:
             q = reachable+step
-            #print("Searching for ass:", q)
+            print("Searching for ass:", q)
             res = await search(url, q)
             if res != []:
                 reachable = q
                 res_dc = await search(url, q+1)
                 if res_dc == []:
-                    settings["ama_ass"] = reachable
-                    dataIO.save_json(SETTINGS, settings)
+                    await self.settings.ama_ass.set(reachable)
+                    done = True 
                     break
                 else:
-                    await asyncio.sleep(2.5)
+                    await asyncio.sleep(1)
                     continue
             elif res == []:
                 step = round(step/2)
+                """
                 if step <= 1:
-                    settings["ama_ass"] = curr_ass
+                    #await self.settings.ama_ass.set(curr_ass)
                     done = True
-            await asyncio.sleep(2.5)
-        print("Total amount of ass:", settings["ama_ass"])
-
-def check_folders():
-    if not os.path.exists(DIR_DATA):
-        print("Creating data/oboobs folder...")
-        os.makedirs(DIR_DATA)
-
-def check_files():
-    if not os.path.isfile(SETTINGS):
-        print("Creating default boobs ass settings.json...")
-        dataIO.save_json(SETTINGS, DEFAULT)
-    else:  # Key consistency check
-        try:
-            current = dataIO.load_json(SETTINGS)
-        except JSONDecodeError:
-            dataIO.save_json(SETTINGS, DEFAULT)
-            current = dataIO.load_json(SETTINGS)
-
-        if current.keys() != DEFAULT.keys():
-            for key in DEFAULT.keys():
-                if key not in current.keys():
-                    current[key] = DEFAULT[key]
-                    print( "Adding " + str(key) + " field to boobs settings.json")
-            dataIO.save_json(SETTINGS, DEFAULT)
-
-def setup(bot):
-    check_folders()
-    check_files()
-    bot.add_cog(oboobs(bot))
-    bot.loop.create_task(oboobs.boob_knowlegde())
-
+                    """
+            await asyncio.sleep(1)
+            '''
+        if await self.settings.ama_ass() == 0:
+            await self.settings.ama_ass.set(5500)
+            '''
+        print("Total amount of ass:", await self.settings.ama_ass())
