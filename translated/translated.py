@@ -196,8 +196,8 @@ class Translated:
 
             text = up.urlencode(text)
             #print(text)
-            lang_from = lang_from.upper()
-            lang_to = lang_to.upper()
+            lang_from = lang_from.lower()
+            lang_to = lang_to.lower()
             email = self.settings.get("EMAIL", None)
 
             if email is not None:
