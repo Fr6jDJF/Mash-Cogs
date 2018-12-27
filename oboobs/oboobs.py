@@ -83,8 +83,12 @@ class OboobsC(BaseCog):
              await ctx.send("Error getting results.\n{}".format(e))
              return
         if ctx.channel.is_nsfw():
-            emb = discord.Embed(title="Boobs")
+            emb = discord.Embed(title="Some boobs... 👀", color=0x891193)
             emb.set_image(url=boob)
+            await ctx.send(embed=emb)
+
+        else:
+            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0x891193)
             await ctx.send(embed=emb)
 
     # Ass
@@ -101,12 +105,15 @@ class OboobsC(BaseCog):
             await ctx.send("Error getting results.\n{}".format(e))
             return
         if ctx.channel.is_nsfw():
-            emb = discord.Embed(title="Ass")
+            emb = discord.Embed(title="Some ass... 👀", color=0x891193)
             emb.set_image(url=ass)
             await ctx.send(embed=emb)
 
+        else:
+            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0x891193)
+            await ctx.send(embed=emb)
 
-    @checks.admin_or_permissions(manage_server=True)
+    @checks.admin_or_permissions(manage_guild=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def nsfw(self, ctx):
         """Toggle oboobs nswf for this channel on/off.
@@ -128,7 +135,7 @@ class OboobsC(BaseCog):
                 await self.settings.guild(ctx.guild).nsfw_channels.set(chans)
                 await ctx.send("nsfw OFF")
         
-    @checks.admin_or_permissions(manage_server=True)
+    @checks.admin_or_permissions(manage_guild=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def invert(self, ctx):
         """Invert nsfw blacklist to whitelist
