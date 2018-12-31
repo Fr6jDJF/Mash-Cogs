@@ -54,6 +54,7 @@ class OboobsC(BaseCog):
         }
         self.settings.register_guild(**default_guild)
         self.settings.register_global(**default_global)
+        self.bot.session = aiohttp.ClientSession(loop=self.bot.loop)
 
     async def get(self, url):
         async with aiohttp.ClientSession() as session:
@@ -72,6 +73,9 @@ class OboobsC(BaseCog):
     @commands.command(no_pm=True)
     async def boobs(self, ctx):
         """Shows some boobs."""
+        if ctx.channel.is_nsfw() == False:
+            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0xaa0000)
+            return await ctx.send(embed=emb)        
         try:
             rdm = random.randint(0, await self.settings.ama_boobs())
             search = ("http://api.oboobs.ru/boobs/{}".format(rdm))
@@ -82,19 +86,18 @@ class OboobsC(BaseCog):
         except Exception as e:
              await ctx.send("Error getting results.\n{}".format(e))
              return
-        if ctx.channel.is_nsfw():
-            emb = discord.Embed(title="Some boobs... 👀", color=0x891193)
-            emb.set_image(url=boob)
-            await ctx.send(embed=emb)
-
-        else:
-            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0x891193)
-            await ctx.send(embed=emb)
+        emb = discord.Embed(title="Some boobs... 👀", color=0x891193)
+        emb.set_image(url=boob)
+        emb.set_footer(text="Requested by {} 😏".format(ctx.author))
+        await ctx.send(embed=emb)            
 
     # Ass
     @commands.command(pass_context=True, no_pm=False)
     async def ass(self, ctx):
         """Shows some ass."""
+        if ctx.channel.is_nsfw() == False:
+            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0xaa0000)
+            return await ctx.send(embed=emb)  
         try:
             rdm = random.randint(0, await self.settings.ama_ass())
             search = ("http://api.obutts.ru/butts/{}".format(rdm))
@@ -104,19 +107,15 @@ class OboobsC(BaseCog):
         except Exception as e:
             await ctx.send("Error getting results.\n{}".format(e))
             return
-        if ctx.channel.is_nsfw():
-            emb = discord.Embed(title="Some ass... 👀", color=0x891193)
-            emb.set_image(url=ass)
-            await ctx.send(embed=emb)
-
-        else:
-            emb = discord.Embed(title="⛔ You can't use that command in a non-NSFW channel !", color=0x891193)
-            await ctx.send(embed=emb)
+        emb = discord.Embed(title="Some ass... 👀", color=0x891193)
+        emb.set_image(url=ass)
+        emb.set_footer(text="Requested by {} 🍑".format(ctx.author))
+        await ctx.send(embed=emb)
 
     @checks.admin_or_permissions(manage_guild=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def nsfw(self, ctx):
-        """Toggle oboobs nswf for this channel on/off.
+        """Toggle oboobs nsfw for this channel on/off.
         Admin/owner restricted."""
         nsfwChan = False
         # Reset nsfw.
