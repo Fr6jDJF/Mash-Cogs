@@ -106,7 +106,7 @@ class OboobsC(BaseCog):
             await ctx.send(embed=emb)
 
 
-    @checks.admin_or_permissions(manage_server=True)
+    @checks.admin_or_permissions(manage_guild=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def nsfw(self, ctx):
         """Toggle oboobs nswf for this channel on/off.
@@ -128,7 +128,7 @@ class OboobsC(BaseCog):
                 await self.settings.guild(ctx.guild).nsfw_channels.set(chans)
                 await ctx.send("nsfw OFF")
         
-    @checks.admin_or_permissions(manage_server=True)
+    @checks.admin_or_permissions(manage_guild=True)
     @_oboobs.command(pass_context=True, no_pm=True)
     async def invert(self, ctx):
         """Invert nsfw blacklist to whitelist
